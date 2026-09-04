@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		[[$Heads]]
+	</head>
+	<body class="template-collection">
+	    <div class="page_preloader"></div>
+	    <div id="wrapper1">
+	        <div id="wrapper2">
+	        [[$header]]
+	        [[$crumbs]]
+                <div id="main" role="main">
+                    <div class="container">
+                        <div class="main_content">
+                            <div class="box-container">
+                                <div class="page-scope">
+                                    <div class="page_header">
+                                        <h1 class="page_heading">[[*pagetitle]]</h1>
+                                    </div>
+                                    <div class="page_content">
+<div class="profils">
+  <!-- Навигация -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#zakaz" aria-controls="zakaz" role="tab" data-toggle="tab">История заказов</a></li>
+    <li><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Профиль</a></li>
+    <li><a href="#cards" aria-controls="cards" role="tab" data-toggle="tab">Список сохранённых корзин</a></li>
+
+  </ul>
+  <!-- Содержимое вкладок -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="zakaz">[[!officeMiniShop2?]][[$LichnyKabinetMobile]]</div>
+    <div role="tabpanel" class="tab-pane" id="profile">[[!officeProfile?&HybridAuth=`0`&tplProfile=`tpl.Office.profile.form2`]]</div>
+    <div role="tabpanel" class="tab-pane" id="cards"><p><br></p>[[!msBasketsList?]]</div>
+  </div>
+</div>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+			        </div>
+		        </div>
+	         	[[$Footers]]
+		     </div>
+		</div>
+	</body>
+</html>

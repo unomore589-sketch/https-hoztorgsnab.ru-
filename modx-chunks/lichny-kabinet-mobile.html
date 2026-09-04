@@ -1,196 +1,141 @@
-<div class="hts-cab">
-
-  <div class="hts-cab-tabs">
-    <button class="hts-cab-tab is-active" data-tab="orders">Заказы</button>
-    <button class="hts-cab-tab" data-tab="fav">Избранное</button>
-    <button class="hts-cab-tab" data-tab="profile">Профиль</button>
-  </div>
-
-  <!-- ЗАКАЗЫ -->
-  <div class="hts-cab-panel is-active" data-panel="orders">
-
-    <div class="hts-cab-filters">
-      <select class="hts-cab-select" id="htsOrderStatus">
-        <option value="">Все статусы</option>
-        <option value="new">Новый</option>
-        <option value="work">В обработке</option>
-        <option value="done">Выполнен</option>
-        <option value="cancel">Отменён</option>
-      </select>
-      <input class="hts-cab-search" id="htsOrderSearch" type="text" placeholder="Номер заказа...">
-    </div>
-
-    <!-- Каждая .hts-order-card = одна строка старой таблицы. Замените блок ниже на цикл вашего сниппета заказов -->
-    <div class="hts-order-list" id="htsOrderList">
-
-      <div class="hts-order-card" data-status="done" data-num="10231">
-        <div class="hts-order-top">
-          <span class="hts-order-num">Заказ №10231</span>
-          <span class="hts-order-date">12.08.2026</span>
-        </div>
-        <div class="hts-order-mid">
-          <span class="hts-order-badge hts-badge-done">Выполнен</span>
-          <span class="hts-order-sum">7 480 ₽</span>
-        </div>
-        <div class="hts-order-items" hidden>
-          <div class="hts-order-item">Перчатки х/б, 10 пар — 350 ₽</div>
-          <div class="hts-order-item">Мешки для мусора 120л, уп. — 1 240 ₽</div>
-        </div>
-        <div class="hts-order-actions">
-          <button class="hts-btn hts-btn-ghost" onclick="htsToggleOrder(this)">Состав заказа</button>
-          <button class="hts-btn hts-btn-primary" onclick="htsRepeatOrder('10231')">Повторить заказ</button>
-        </div>
-      </div>
-
-      <div class="hts-order-card" data-status="work" data-num="10255">
-        <div class="hts-order-top">
-          <span class="hts-order-num">Заказ №10255</span>
-          <span class="hts-order-date">27.08.2026</span>
-        </div>
-        <div class="hts-order-mid">
-          <span class="hts-order-badge hts-badge-work">В обработке</span>
-          <span class="hts-order-sum">3 120 ₽</span>
-        </div>
-        <div class="hts-order-items" hidden>
-          <div class="hts-order-item">Швабра с отжимом — 890 ₽</div>
-        </div>
-        <div class="hts-order-actions">
-          <button class="hts-btn hts-btn-ghost" onclick="htsToggleOrder(this)">Состав заказа</button>
-          <button class="hts-btn hts-btn-primary" onclick="htsRepeatOrder('10255')">Повторить заказ</button>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="hts-cab-empty" id="htsOrderEmpty" hidden>Заказы не найдены</div>
-  </div>
-
-  <!-- ИЗБРАННОЕ / БЫСТРЫЙ ПОВТОРНЫЙ ЗАКАЗ -->
-  <div class="hts-cab-panel" data-panel="fav">
-    <div class="hts-fav-grid" id="htsFavGrid">
-      <div class="hts-fav-card">
-        <div class="hts-fav-name">Перчатки х/б, 10 пар</div>
-        <div class="hts-fav-price">350 ₽</div>
-        <div class="hts-qty">
-          <button class="hts-qty-btn" onclick="htsQtyChange(this,-1)">−</button>
-          <input class="hts-qty-val" type="text" value="1" readonly>
-          <button class="hts-qty-btn" onclick="htsQtyChange(this,1)">+</button>
-        </div>
-        <button class="hts-btn hts-btn-primary hts-btn-block" onclick="htsAddToCart(this)">В корзину</button>
-      </div>
-      <div class="hts-fav-card">
-        <div class="hts-fav-name">Мешки для мусора 120л, уп.</div>
-        <div class="hts-fav-price">1 240 ₽</div>
-        <div class="hts-qty">
-          <button class="hts-qty-btn" onclick="htsQtyChange(this,-1)">−</button>
-          <input class="hts-qty-val" type="text" value="1" readonly>
-          <button class="hts-qty-btn" onclick="htsQtyChange(this,1)">+</button>
-        </div>
-        <button class="hts-btn hts-btn-primary hts-btn-block" onclick="htsAddToCart(this)">В корзину</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ПРОФИЛЬ -->
-  <div class="hts-cab-panel" data-panel="profile">
-    <div class="hts-profile-row"><span>Имя</span><b>Иван Петров</b></div>
-    <div class="hts-profile-row"><span>Телефон</span><b>+7 (495) 000-00-00</b></div>
-    <div class="hts-profile-row"><span>Бонусы</span><b>★ 640</b></div>
-    <a class="hts-btn hts-btn-ghost hts-btn-block" href="tel:+74951202314">Позвонить менеджеру</a>
-    <a class="hts-btn hts-btn-block hts-logout" href="[[~[[*id]]? &logout=`1`]]">Выйти из кабинета</a>
-  </div>
-
-</div>
-
 <style>
-.hts-cab{max-width:480px!important;margin:0 auto!important;font-size:15px!important}
-.hts-cab-tabs{display:flex!important;border-bottom:2px solid #e5e8ec!important;margin-bottom:14px!important}
-.hts-cab-tab{flex:1!important;padding:10px 4px!important;background:none!important;border:none!important;border-bottom:2px solid transparent!important;margin-bottom:-2px!important;font-size:14px!important;color:#6b7280!important;cursor:pointer!important}
-.hts-cab-tab.is-active{color:#2f7d1e!important;border-bottom-color:#5cb82e!important;font-weight:600!important}
-.hts-cab-panel{display:none!important}
-.hts-cab-panel.is-active{display:block!important}
-.hts-cab-filters{display:flex!important;gap:8px!important;margin-bottom:12px!important}
-.hts-cab-select,.hts-cab-search{flex:1!important;min-width:0!important;padding:8px 10px!important;border:1px solid #d7dbe0!important;border-radius:8px!important;font-size:14px!important}
-.hts-order-list{display:flex!important;flex-direction:column!important;gap:10px!important}
-.hts-order-card{border:1px solid #e5e8ec!important;border-radius:12px!important;padding:12px!important;background:#fff!important}
-.hts-order-top{display:flex!important;justify-content:space-between!important;font-size:13px!important;color:#6b7280!important;margin-bottom:6px!important}
-.hts-order-num{font-weight:600!important;color:#1f2937!important}
-.hts-order-mid{display:flex!important;justify-content:space-between!important;align-items:center!important;margin-bottom:8px!important}
-.hts-order-badge{font-size:12px!important;padding:3px 9px!important;border-radius:99px!important;font-weight:600!important}
-.hts-badge-done{background:#e5f6e0!important;color:#2f7d1e!important}
-.hts-badge-work{background:#fff2d9!important;color:#a15c00!important}
-.hts-badge-cancel{background:#fde3e3!important;color:#b3261e!important}
-.hts-order-sum{font-weight:700!important;color:#1f2937!important}
-.hts-order-items{border-top:1px dashed #e5e8ec!important;margin:8px 0!important;padding-top:8px!important}
-.hts-order-item{font-size:13px!important;color:#4b5563!important;padding:2px 0!important}
-.hts-order-actions{display:flex!important;gap:8px!important}
-.hts-btn{flex:1!important;text-align:center!important;padding:9px 10px!important;border-radius:8px!important;border:1px solid transparent!important;font-size:13px!important;cursor:pointer!important;text-decoration:none!important;display:inline-block!important}
-.hts-btn-primary{background:#5cb82e!important;color:#fff!important;font-weight:600!important}
-.hts-btn-ghost{background:#fff!important;color:#374151!important;border-color:#d7dbe0!important}
-.hts-btn-block{display:block!important;width:100%!important;margin-top:10px!important;box-sizing:border-box!important}
-.hts-cab-empty{text-align:center!important;color:#6b7280!important;padding:20px 0!important}
-.hts-fav-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
-.hts-fav-card{border:1px solid #e5e8ec!important;border-radius:12px!important;padding:10px!important}
-.hts-fav-name{font-size:13px!important;min-height:34px!important;margin-bottom:4px!important}
-.hts-fav-price{font-weight:700!important;color:#1f2937!important;margin-bottom:6px!important}
-.hts-qty{display:flex!important;align-items:center!important;gap:6px!important;margin-bottom:8px!important}
-.hts-qty-btn{width:28px!important;height:28px!important;border:1px solid #d7dbe0!important;border-radius:6px!important;background:#fff!important;font-size:16px!important;line-height:1!important;cursor:pointer!important}
-.hts-qty-val{width:32px!important;text-align:center!important;border:none!important;font-size:14px!important}
-.hts-profile-row{display:flex!important;justify-content:space-between!important;padding:10px 0!important;border-bottom:1px solid #f0f1f3!important}
-.hts-logout{color:#b3261e!important;border:1px solid #f3c9c9!important}
-@media(min-width:480px){.hts-fav-grid{grid-template-columns:1fr 1fr 1fr!important}}
+@media (min-width:769px){
+  #hts-mobile-orders{display:none!important}
+}
+@media (max-width:768px){
+  #office-minishop2-grid{display:none!important}
+}
+.hts-mo{max-width:600px!important;margin:0 auto!important;font-size:15px!important}
+.hts-mo-toolbar{display:flex!important;justify-content:flex-end!important;margin-bottom:10px!important}
+.hts-mo-refresh{border:1px solid #d7dae3!important;background:#fff!important;border-radius:8px!important;padding:6px 12px!important;font-size:13px!important;cursor:pointer!important}
+.hts-mo-card{border:1px solid #e3e6f0!important;border-radius:12px!important;padding:14px!important;margin-bottom:12px!important;background:#fff!important}
+.hts-mo-top{display:flex!important;justify-content:space-between!important;align-items:baseline!important;margin-bottom:8px!important}
+.hts-mo-num{font-weight:700!important;color:#1f2937!important;font-size:15px!important}
+.hts-mo-date{font-size:12px!important;color:#6b7280!important}
+.hts-mo-mid{display:flex!important;justify-content:space-between!important;align-items:center!important;margin-bottom:8px!important;flex-wrap:wrap!important;gap:6px!important}
+.hts-mo-badge{font-size:12px!important;padding:3px 10px!important;border-radius:99px!important;font-weight:600!important;background:#eef0f4!important;color:#444!important}
+.hts-mo-badge.new{background:#e6f0ff!important;color:#1d4ed8!important}
+.hts-mo-badge.done{background:#e5f6e0!important;color:#2f7d1e!important}
+.hts-mo-badge.cancel{background:#fde3e3!important;color:#b3261e!important}
+.hts-mo-badge.work{background:#fff2d9!important;color:#a15c00!important}
+.hts-mo-sum{font-weight:700!important;color:#1f2937!important}
+.hts-mo-line{font-size:13px!important;color:#4b5563!important;margin-bottom:2px!important}
+.hts-mo-toggle{width:100%!important;text-align:center!important;padding:8px!important;border:1px solid #d7dae3!important;border-radius:8px!important;background:#fff!important;font-size:13px!important;color:#374151!important;cursor:pointer!important;margin-top:6px!important}
+.hts-mo-items{border-top:1px dashed #e3e6f0!important;margin-top:10px!important;padding-top:10px!important;display:none!important}
+.hts-mo-items.open{display:block!important}
+.hts-mo-item{display:flex!important;justify-content:space-between!important;gap:10px!important;font-size:13px!important;padding:5px 0!important;border-bottom:1px solid #f3f4f6!important}
+.hts-mo-item:last-child{border-bottom:none!important}
+.hts-mo-item a{color:#1f2937!important;text-decoration:none!important}
+.hts-mo-item .hts-mo-qty{color:#6b7280!important;white-space:nowrap!important}
+.hts-mo-empty,.hts-mo-loading,.hts-mo-error{text-align:center!important;color:#6b7280!important;padding:24px 0!important;font-size:14px!important}
+.hts-mo-error{color:#b3261e!important}
 </style>
+
+<div id="hts-mobile-orders" class="hts-mo">
+  <div class="hts-mo-toolbar"><button class="hts-mo-refresh" onclick="htsMoLoad()">Обновить</button></div>
+  <div id="hts-mo-list"><div class="hts-mo-loading">Загрузка заказов…</div></div>
+</div>
 
 <script>
 (function(){
-  document.querySelectorAll('.hts-cab-tab').forEach(function(tab){
-    tab.addEventListener('click',function(){
-      document.querySelectorAll('.hts-cab-tab').forEach(function(t){t.classList.remove('is-active')});
-      document.querySelectorAll('.hts-cab-panel').forEach(function(p){p.classList.remove('is-active')});
-      tab.classList.add('is-active');
-      document.querySelector('.hts-cab-panel[data-panel="'+tab.dataset.tab+'"]').classList.add('is-active');
-    });
-  });
-
-  function filterOrders(){
-    var status=document.getElementById('htsOrderStatus').value;
-    var q=document.getElementById('htsOrderSearch').value.trim();
-    var cards=document.querySelectorAll('.hts-order-card');
-    var visible=0;
-    cards.forEach(function(c){
-      var matchStatus=!status||c.dataset.status===status;
-      var matchQ=!q||c.dataset.num.indexOf(q)!==-1;
-      var show=matchStatus&&matchQ;
-      c.hidden=!show;
-      if(show)visible++;
-    });
-    document.getElementById('htsOrderEmpty').hidden=visible>0;
+  function htsMoStatusClass(text){
+    text=(text||'').toLowerCase();
+    if(text.indexOf('нов')>-1) return 'new';
+    if(text.indexOf('выполн')>-1||text.indexOf('заверш')>-1) return 'done';
+    if(text.indexOf('отмен')>-1) return 'cancel';
+    if(text.indexOf('обработ')>-1||text.indexOf('сбор')>-1||text.indexOf('пути')>-1) return 'work';
+    return '';
   }
-  document.getElementById('htsOrderStatus').addEventListener('change',filterOrders);
-  document.getElementById('htsOrderSearch').addEventListener('input',filterOrders);
+  function htsMoText(html){
+    var d=document.createElement('div'); d.innerHTML=html||''; return d.textContent.trim();
+  }
+  function htsMoDate(s){
+    if(!s) return '';
+    var p=s.split(/[- :]/);
+    if(p.length<5) return s;
+    return p[2]+'.'+p[1]+'.'+p[0]+' '+p[3]+':'+p[4];
+  }
+  function htsMoMoney(v){
+    v=parseFloat(v||0);
+    return v.toLocaleString('ru-RU')+' ₽';
+  }
+
+  window.htsMoLoad=function(){
+    var list=document.getElementById('hts-mo-list');
+    list.innerHTML='<div class="hts-mo-loading">Загрузка заказов…</div>';
+    var body=new URLSearchParams({action:'minishop2/getOrders',start:'0',limit:'20',pageId:'81'});
+    fetch('/assets/components/office/action.php',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data.success||!data.results||!data.results.length){
+          list.innerHTML='<div class="hts-mo-empty">Заказов пока нет</div>';
+          return;
+        }
+        list.innerHTML='';
+        data.results.forEach(function(o){
+          var statusText=htsMoText(o.status);
+          var cls=htsMoStatusClass(statusText);
+          var card=document.createElement('div');
+          card.className='hts-mo-card';
+          card.innerHTML=
+            '<div class="hts-mo-top">'+
+              '<span class="hts-mo-num">Заказ №'+o.num+'</span>'+
+              '<span class="hts-mo-date">'+htsMoDate(o.createdon)+'</span>'+
+            '</div>'+
+            '<div class="hts-mo-mid">'+
+              '<span class="hts-mo-badge '+cls+'">'+statusText+'</span>'+
+              '<span class="hts-mo-sum">'+htsMoMoney(o.cost)+'</span>'+
+            '</div>'+
+            '<div class="hts-mo-line">Доставка: '+(o.delivery||'—')+'</div>'+
+            (o.payment?('<div class="hts-mo-line">Оплата: '+o.payment+'</div>'):'')+
+            '<button class="hts-mo-toggle" data-id="'+o.id+'" onclick="htsMoToggle(this)">Показать состав заказа</button>'+
+            '<div class="hts-mo-items" id="hts-mo-items-'+o.id+'"></div>';
+          list.appendChild(card);
+        });
+      })
+      .catch(function(){
+        list.innerHTML='<div class="hts-mo-error">Не удалось загрузить заказы. Обновите страницу.</div>';
+      });
+  };
+
+  window.htsMoToggle=function(btn){
+    var id=btn.getAttribute('data-id');
+    var box=document.getElementById('hts-mo-items-'+id);
+    var opened=box.classList.contains('open');
+    if(opened){
+      box.classList.remove('open');
+      btn.textContent='Показать состав заказа';
+      return;
+    }
+    box.classList.add('open');
+    btn.textContent='Скрыть состав заказа';
+    if(box.dataset.loaded) return;
+    box.innerHTML='<div class="hts-mo-loading">Загрузка…</div>';
+    var body=new URLSearchParams({action:'minishop2/getOrderProducts',start:'0',limit:'50',order_id:id,pageId:'81'});
+    fetch('/assets/components/office/action.php',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data.success||!data.results||!data.results.length){
+          box.innerHTML='<div class="hts-mo-empty">Нет данных о составе</div>';
+          return;
+        }
+        box.innerHTML='';
+        data.results.forEach(function(p){
+          var row=document.createElement('div');
+          row.className='hts-mo-item';
+          var nameHtml=p.url?('<a href="'+p.url+'">'+p.name+'</a>'):p.name;
+          row.innerHTML='<span>'+nameHtml+'</span><span class="hts-mo-qty">'+p.count+' × '+htsMoMoney(p.price)+'</span>';
+          box.appendChild(row);
+        });
+        box.dataset.loaded='1';
+      })
+      .catch(function(){
+        box.innerHTML='<div class="hts-mo-error">Ошибка загрузки состава</div>';
+      });
+  };
+
+  if(document.getElementById('hts-mo-list')){
+    htsMoLoad();
+  }
 })();
-
-function htsToggleOrder(btn){
-  var items=btn.closest('.hts-order-card').querySelector('.hts-order-items');
-  items.hidden=!items.hidden;
-  btn.textContent=items.hidden?'Состав заказа':'Скрыть состав';
-}
-
-function htsQtyChange(btn,delta){
-  var input=btn.parentElement.querySelector('.hts-qty-val');
-  var v=Math.max(1,parseInt(input.value,10)+delta);
-  input.value=v;
-}
-
-// TODO: подключить к реальной корзине сайта (замените на вызов существующего API корзины)
-function htsAddToCart(btn){
-  var card=btn.closest('.hts-fav-card');
-  var qty=card.querySelector('.hts-qty-val').value;
-  alert('Добавлено в корзину: '+card.querySelector('.hts-fav-name').textContent+' x'+qty);
-}
-
-// TODO: подключить повтор заказа к реальному обработчику корзины/заказа
-function htsRepeatOrder(orderNum){
-  alert('Товары заказа №'+orderNum+' добавлены в корзину');
-}
 </script>
