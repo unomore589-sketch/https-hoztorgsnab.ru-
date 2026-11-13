@@ -1,0 +1,957 @@
+{
+ "home": {
+  "url": "/",
+  "err": null,
+  "wall": 6331,
+  "title": "Хозтовары оптом и в розницу в Москве — доставка / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "ru",
+  "ttfb": 1353,
+  "dcl": 2551,
+  "load": 2824,
+  "lcp": 2300,
+  "cls": 0,
+  "docHeight": 4544,
+  "screens": 5.4,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 304,
+  "tapTotal": 102,
+  "tapSmall": 58,
+  "tapTiny": 26,
+  "smallTextPct": 0,
+  "domNodes": 1855,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 34,
+  "imgLazy": 4,
+  "imgNoDims": 34,
+  "imgOversized": 3,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 1,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 67,
+  "transferKB": 3124,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 178558
+   },
+   "stylesheet": {
+    "n": 14,
+    "bytes": 359589
+   },
+   "image": {
+    "n": 29,
+    "bytes": 1876706
+   },
+   "script": {
+    "n": 14,
+    "bytes": 557625
+   },
+   "xhr": {
+    "n": 3,
+    "bytes": 107884
+   },
+   "font": {
+    "n": 5,
+    "bytes": 109512
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 62,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 297,
+    "type": "image",
+    "url": "/images/custom_bottom_bg.jpg"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 229,
+    "type": "image",
+    "url": "/images/blog/ledorub-oblozhka.jpg"
+   },
+   {
+    "kb": 218,
+    "type": "image",
+    "url": "/images/blog/lopata-etalon-original-priznaki.png"
+   },
+   {
+    "kb": 175,
+    "type": "image",
+    "url": "/Lopata%20mir%20niz%20krep%201b.jpg"
+   },
+   {
+    "kb": 174,
+    "type": "document",
+    "url": "/"
+   },
+   {
+    "kb": 132,
+    "type": "image",
+    "url": "/images/blog/meshki-dlya-musora-oblozhka.jpg"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 24,
+   "jpg": 4,
+   "gif": 1
+  }
+ },
+ "catalog": {
+  "url": "/catalog/",
+  "err": null,
+  "wall": 6032,
+  "title": "Каталог / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "ru",
+  "ttfb": 1327,
+  "dcl": 2491,
+  "load": 2523,
+  "lcp": 2508,
+  "cls": 0,
+  "docHeight": 3590,
+  "screens": 4.3,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 0,
+  "tapTotal": 78,
+  "tapSmall": 53,
+  "tapTiny": 26,
+  "smallTextPct": 0,
+  "domNodes": 1115,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 4,
+  "imgLazy": 0,
+  "imgNoDims": 4,
+  "imgOversized": 0,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 0,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 46,
+  "transferKB": 1361,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 113128
+   },
+   "stylesheet": {
+    "n": 10,
+    "bytes": 345502
+   },
+   "image": {
+    "n": 17,
+    "bytes": 216092
+   },
+   "script": {
+    "n": 10,
+    "bytes": 507963
+   },
+   "xhr": {
+    "n": 2,
+    "bytes": 91704
+   },
+   "font": {
+    "n": 5,
+    "bytes": 109512
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 41,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 110,
+    "type": "document",
+    "url": "/catalog/"
+   },
+   {
+    "kb": 95,
+    "type": "script",
+    "url": "/assets/components/themebootstrap/js/jquery.min.js"
+   },
+   {
+    "kb": 70,
+    "type": "font",
+    "url": "/assets/templates/hoztorg/fonts/fontawesome-webfont.woff2?v=4.6.3"
+   },
+   {
+    "kb": 47,
+    "type": "image",
+    "url": "/assets/cache_image/images/menu_icon_cataloga/Bitovaya-himiya_283,hx0_230.png"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549390089"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549390090"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 7,
+   "jpg": 9,
+   "gif": 1
+  }
+ },
+ "category": {
+  "url": "/catalog/meshki-dlya-musora/",
+  "err": null,
+  "wall": 6140,
+  "title": "Мешки для мусора оптом и в розницу — 30–300 литров / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "ru",
+  "ttfb": 1576,
+  "dcl": 2585,
+  "load": 2632,
+  "lcp": 2612,
+  "cls": 0,
+  "docHeight": 8606,
+  "screens": 10.3,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 0,
+  "tapTotal": 97,
+  "tapSmall": 46,
+  "tapTiny": 14,
+  "smallTextPct": 0,
+  "domNodes": 2168,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 35,
+  "imgLazy": 0,
+  "imgNoDims": 35,
+  "imgOversized": 0,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 1,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 61,
+  "transferKB": 1498,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 227696
+   },
+   "stylesheet": {
+    "n": 10,
+    "bytes": 345502
+   },
+   "image": {
+    "n": 32,
+    "bytes": 242104
+   },
+   "script": {
+    "n": 10,
+    "bytes": 507963
+   },
+   "font": {
+    "n": 5,
+    "bytes": 109512
+   },
+   "xhr": {
+    "n": 2,
+    "bytes": 91704
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 56,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 222,
+    "type": "document",
+    "url": "/catalog/meshki-dlya-musora/"
+   },
+   {
+    "kb": 95,
+    "type": "script",
+    "url": "/assets/components/themebootstrap/js/jquery.min.js"
+   },
+   {
+    "kb": 70,
+    "type": "font",
+    "url": "/assets/templates/hoztorg/fonts/fontawesome-webfont.woff2?v=4.6.3"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549397225"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549397226"
+   },
+   {
+    "kb": 36,
+    "type": "image",
+    "url": "/images/banner/instrument.jpg"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 3,
+   "jpg": 28,
+   "gif": 1
+  }
+ },
+ "subcategory": {
+  "url": "/catalog/meshki-dlya-musora/meshki-dlya-musora-v-rulonax/",
+  "err": null,
+  "wall": 6242,
+  "title": "Мешки для мусора в рулонах — 30–300 л, опт и розница / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "ru",
+  "ttfb": 1639,
+  "dcl": 2704,
+  "load": 2734,
+  "lcp": 2732,
+  "cls": 0,
+  "docHeight": 6694,
+  "screens": 8,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 0,
+  "tapTotal": 82,
+  "tapSmall": 48,
+  "tapTiny": 20,
+  "smallTextPct": 0,
+  "domNodes": 1872,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 28,
+  "imgLazy": 0,
+  "imgNoDims": 28,
+  "imgOversized": 0,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 1,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 54,
+  "transferKB": 1451,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 194606
+   },
+   "stylesheet": {
+    "n": 10,
+    "bytes": 345502
+   },
+   "image": {
+    "n": 25,
+    "bytes": 226659
+   },
+   "script": {
+    "n": 10,
+    "bytes": 507963
+   },
+   "font": {
+    "n": 5,
+    "bytes": 109512
+   },
+   "xhr": {
+    "n": 2,
+    "bytes": 91704
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 49,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 190,
+    "type": "document",
+    "url": "/catalog/meshki-dlya-musora/meshki-dlya-musora-v-rulonax/"
+   },
+   {
+    "kb": 95,
+    "type": "script",
+    "url": "/assets/components/themebootstrap/js/jquery.min.js"
+   },
+   {
+    "kb": 70,
+    "type": "font",
+    "url": "/assets/templates/hoztorg/fonts/fontawesome-webfont.woff2?v=4.6.3"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549405382"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549405383"
+   },
+   {
+    "kb": 36,
+    "type": "image",
+    "url": "/images/banner/instrument.jpg"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 4,
+   "jpg": 20,
+   "gif": 1
+  }
+ },
+ "product": {
+  "url": "/catalog/meshki-dlya-musora/meshki-dlya-musora-v-rulonax/meshok-dlya-musora-120-l.-rulon-bez-zavyazok,-5sht,-70-mkm-rossiya/",
+  "err": null,
+  "wall": 6387,
+  "title": "Мешки для мусора чёрные 120 л, ПВД 60–70 мкм, 70×110 см / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "ru",
+  "ttfb": 1382,
+  "dcl": 2832,
+  "load": 2880,
+  "lcp": 2600,
+  "cls": 0.04,
+  "docHeight": 4724,
+  "screens": 5.6,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 219,
+  "tapTotal": 72,
+  "tapSmall": 52,
+  "tapTiny": 19,
+  "smallTextPct": 0,
+  "domNodes": 1561,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   },
+   {
+    "name": "count",
+    "type": "text",
+    "fs": 13,
+    "inputmode": null,
+    "ac": null,
+    "h": 51
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 20,
+  "imgLazy": 0,
+  "imgNoDims": 20,
+  "imgOversized": 1,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 1,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 56,
+  "transferKB": 2330,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 163348
+   },
+   "stylesheet": {
+    "n": 14,
+    "bytes": 359589
+   },
+   "image": {
+    "n": 17,
+    "bytes": 1036121
+   },
+   "script": {
+    "n": 15,
+    "bytes": 599909
+   },
+   "font": {
+    "n": 5,
+    "bytes": 109512
+   },
+   "xhr": {
+    "n": 3,
+    "bytes": 107884
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 51,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 200,
+    "type": "image",
+    "url": "/assets/images/products/1744/6de5727e75ee11e780c4305a3ac8720a-40b0d695e8b511eb80da305a3ac87207.jpg"
+   },
+   {
+    "kb": 160,
+    "type": "document",
+    "url": "/catalog/meshki-dlya-musora/meshki-dlya-musora-v-rulonax/meshok-dlya-musora-120-l.-rulon-bez-zavyazok,-5sht,-7"
+   },
+   {
+    "kb": 95,
+    "type": "script",
+    "url": "/assets/components/themebootstrap/js/jquery.min.js"
+   },
+   {
+    "kb": 94,
+    "type": "image",
+    "url": "/assets/cache_image/products/2316/meshki-v-rulone-60litrov_276x276_09a.png"
+   },
+   {
+    "kb": 89,
+    "type": "image",
+    "url": "/assets/cache_image/products/2315/mesok-30litrov_276x276_09a.png"
+   },
+   {
+    "kb": 88,
+    "type": "image",
+    "url": "/assets/cache_image/products/2252/dfac9982e86b11eb80da305a3ac87207-19cc8656e8b511eb80da305a3ac87207_276x276_09"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 15,
+   "jpg": 1,
+   "gif": 1
+  }
+ },
+ "search": {
+  "url": "/poisk.html?query=%D0%BC%D0%B5%D1%88%D0%BA%D0%B8",
+  "err": null,
+  "wall": 8901,
+  "title": "Товары для ТСЖ и ЖКХ все для благоустройства, хозяйственные товары / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "ru",
+  "ttfb": 1941,
+  "dcl": 5283,
+  "load": 5393,
+  "lcp": 5308,
+  "cls": 0.002,
+  "docHeight": 3864,
+  "screens": 4.6,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 3,
+  "tapTotal": 61,
+  "tapSmall": 38,
+  "tapTiny": 10,
+  "smallTextPct": 0,
+  "domNodes": 1217,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   },
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 13,
+    "inputmode": null,
+    "ac": "off",
+    "h": 39
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 15,
+  "imgLazy": 0,
+  "imgNoDims": 15,
+  "imgOversized": 0,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 0,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 47,
+  "transferKB": 1353,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 127924
+   },
+   "stylesheet": {
+    "n": 10,
+    "bytes": 345502
+   },
+   "script": {
+    "n": 10,
+    "bytes": 507963
+   },
+   "image": {
+    "n": 16,
+    "bytes": 123603
+   },
+   "font": {
+    "n": 6,
+    "bytes": 132936
+   },
+   "xhr": {
+    "n": 3,
+    "bytes": 137556
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 42,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 125,
+    "type": "document",
+    "url": "/poisk.html?query=%D0%BC%D0%B5%D1%88%D0%BA%D0%B8"
+   },
+   {
+    "kb": 95,
+    "type": "script",
+    "url": "/assets/components/themebootstrap/js/jquery.min.js"
+   },
+   {
+    "kb": 70,
+    "type": "font",
+    "url": "/assets/templates/hoztorg/fonts/fontawesome-webfont.woff2?v=4.6.3"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549420927"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549420928"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549420929"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 5,
+   "jpg": 10,
+   "gif": 1
+  }
+ },
+ "cart": {
+  "url": "/cart.html",
+  "err": null,
+  "wall": 5686,
+  "title": "Добавьте товар в корзину с сформируйте счет и выберите способ оплаты и доставку / HOZTORGSNAB",
+  "viewportMeta": "width=device-width, initial-scale=1.0",
+  "lang": "en",
+  "ttfb": 989,
+  "dcl": 2138,
+  "load": 2179,
+  "lcp": 2152,
+  "cls": 0,
+  "docHeight": 1618,
+  "screens": 1.9,
+  "hScroll": false,
+  "scrollWidth": 412,
+  "vw": 412,
+  "elementsBeyondViewport": 0,
+  "tapTotal": 23,
+  "tapSmall": 20,
+  "tapTiny": 10,
+  "smallTextPct": 0,
+  "domNodes": 882,
+  "inputs": [
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 17,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   },
+   {
+    "name": "query",
+    "type": "text",
+    "fs": 16,
+    "inputmode": null,
+    "ac": "off",
+    "h": 40
+   },
+   {
+    "name": "msBasketsName",
+    "type": "text",
+    "fs": 13,
+    "inputmode": null,
+    "ac": null,
+    "h": 39
+   }
+  ],
+  "fixed": [
+   "#hts-cookie"
+  ],
+  "imgTotal": 4,
+  "imgLazy": 0,
+  "imgNoDims": 4,
+  "imgOversized": 0,
+  "hasManifest": false,
+  "hasSW": false,
+  "themeColor": null,
+  "jsonLd": 0,
+  "telLinks": 1,
+  "phoneTextNotLink": 2,
+  "requests": 35,
+  "transferKB": 1203,
+  "byType": {
+   "document": {
+    "n": 1,
+    "bytes": 89553
+   },
+   "stylesheet": {
+    "n": 10,
+    "bytes": 345502
+   },
+   "image": {
+    "n": 4,
+    "bytes": 28781
+   },
+   "script": {
+    "n": 11,
+    "bytes": 511692
+   },
+   "font": {
+    "n": 5,
+    "bytes": 109512
+   },
+   "xhr": {
+    "n": 3,
+    "bytes": 137556
+   },
+   "other": {
+    "n": 1,
+    "bytes": 9600
+   }
+  },
+  "hosts": {
+   "hoztorgsnab.ru": 30,
+   "fonts.googleapis.com": 1,
+   "fonts.gstatic.com": 4
+  },
+  "big": [
+   {
+    "kb": 339,
+    "type": "script",
+    "url": "/assets/components/minifyx/cache/scripts_7dfda20a5c.min.js"
+   },
+   {
+    "kb": 281,
+    "type": "stylesheet",
+    "url": "/assets/components/minifyx/cache/styles_ec0ea674e6.min.css"
+   },
+   {
+    "kb": 95,
+    "type": "script",
+    "url": "/assets/components/themebootstrap/js/jquery.min.js"
+   },
+   {
+    "kb": 87,
+    "type": "document",
+    "url": "/cart.html"
+   },
+   {
+    "kb": 70,
+    "type": "font",
+    "url": "/assets/templates/hoztorg/fonts/fontawesome-webfont.woff2?v=4.6.3"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549429708"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549429709"
+   },
+   {
+    "kb": 45,
+    "type": "xhr",
+    "url": "/assets/components/msearch2/js/web/lib/jquery-ui.min.js?_=1794549429710"
+   }
+  ],
+  "failed": [],
+  "imgFormats": {
+   "png": 3,
+   "gif": 1
+  }
+ }
+}
