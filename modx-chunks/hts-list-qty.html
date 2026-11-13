@@ -1,0 +1,247 @@
+<!-- Количество в карточках каталога на телефоне (13.11.2026).
+     В карточке уже есть поле количества (плагин stepper), но общий файл стилей прячет .stepper на экранах
+     уже 480px. Этот блок показывает поле с кнопками «−» и «+». После «В корзину» кнопка становится
+     «✓ В корзине» и ведёт в корзину, а «−» и «+» меняют количество прямо в корзине; «−» на одной штуке
+     убирает товар. Товары, которые уже лежат в корзине, отмечаются сразу при открытии раздела.
+     Добавление идёт обычным механизмом miniShop2 (кнопка «В корзину» не тронута). На экранах шире
+     480px блок ничего не меняет.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+.hts-lq-qty { display: contents }
+.hts-lq-btn, .hts-lq-go { display: none }
+
+@media (max-width: 480px) {
+  .hts-lq-form .product__wrapper { display: flex !important; flex-direction: column !important; height: auto !important }
+  .hts-lq-form .pricer.sht { display: none !important }
+  .hts-lq-form .addtocart, .hts-lq-form .hts-lq-go { order: 2 !important }
+
+  .hts-lq-qty { display: flex !important; align-items: stretch !important; gap: 4px !important; order: 1 !important; width: 100% !important; margin: 6px 0 8px !important; padding: 0 !important }
+  .hts-lq-qty .stepper, .hts-lq-qty > input[name=count] { display: block !important; flex: 1 1 auto !important; min-width: 0 !important; width: auto !important; height: 44px !important; margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; float: none !important; overflow: visible !important; position: static !important }
+  .hts-lq-qty .stepper-step { display: none !important }
+  .hts-lq-qty input[name=count] { width: 100% !important; height: 44px !important; margin: 0 !important; padding: 0 2px !important; border: 1px solid #d7dae3 !important; border-radius: 8px !important; background: #fff !important; color: #222 !important; font-size: 16px !important; font-weight: 600 !important; line-height: 1 !important; text-align: center !important; box-shadow: none !important; float: none !important; position: static !important; -moz-appearance: textfield !important; appearance: textfield !important }
+  .hts-lq-qty input[name=count]::-webkit-outer-spin-button, .hts-lq-qty input[name=count]::-webkit-inner-spin-button { -webkit-appearance: none !important; margin: 0 !important }
+
+  .hts-lq-btn { display: block !important; flex: 0 0 44px !important; width: 44px !important; height: 44px !important; margin: 0 !important; padding: 0 !important; border: 1px solid #d7dae3 !important; border-radius: 8px !important; background: #f7f8fc !important; color: #222 !important; font-size: 22px !important; font-weight: 600 !important; line-height: 1 !important; cursor: pointer !important; touch-action: manipulation !important; -webkit-tap-highlight-color: transparent !important }
+  .hts-lq-btn:active { background: #e3e6f0 !important }
+  .hts-lq-btn:focus-visible, .hts-lq-go:focus-visible { outline: 2px solid #2E4FEA !important; outline-offset: 1px !important }
+
+  .hts-lq-in .addtocart { display: none !important }
+  .hts-lq-in .hts-lq-go { display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; width: 100% !important; min-height: 44px !important; margin: 0 !important; padding: 0 8px !important; border-radius: 8px !important; background: #2F8F00 !important; color: #fff !important; font-size: 16px !important; font-weight: 700 !important; line-height: 1.2 !important; text-decoration: none !important; text-align: center !important }
+  .hts-lq-in .hts-lq-qty input[name=count] { border-color: #2F8F00 !important }
+  .hts-lq-busy .hts-lq-qty input[name=count] { color: #8a93a0 !important }
+}
+</style>
+<script>
+(function () {
+  if (window.htsListQtyBound) return;
+  window.htsListQtyBound = true;
+
+  var CART_URL = '/cart.html';
+  var phone = window.matchMedia ? window.matchMedia('(max-width: 480px)') : null;
+  var cart = null;                         // id товара -> ключ строки и количество в корзине; null — пока неизвестно
+
+  function isPhone() { return !!(phone && phone.matches); }
+  function forms() { return document.querySelectorAll('form.hts-lq-form'); }
+  function countInput(form) { return form.querySelector('input[name=count]'); }
+
+  function parseCart(html) {
+    if (!html || html.indexOf('id="msCart"') < 0) return null;
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var map = { }, twice = { };
+    [].forEach.call(doc.querySelectorAll('#msCart [data-id]'), function (row) {
+      var id = row.getAttribute('data-id'), inp = row.querySelector('input[name=count]');
+      if (!id || !row.id || !inp) return;
+      if (map[id]) twice[id] = true;       // один товар с разными опциями — какую строку менять, неясно
+      map[id] = { key: row.id, count: parseInt(inp.value, 10) || 0 };
+    });
+    for (var id in twice) delete map[id];
+    return map;
+  }
+
+  function setState(form) {
+    var input = countInput(form);
+    var id = (form.querySelector('input[name=id]') || { }).value;
+    var row = cart && isPhone() ? cart[id] : null;
+    if (row) {
+      var was = form.classList.contains('hts-lq-in');
+      form.classList.add('hts-lq-in');
+      form.setAttribute('data-hts-key', row.key);
+      form.setAttribute('data-hts-count', row.count);
+      if (!form.htsTimer) input.value = row.count;   // пока покупатель жмёт кнопки, его число не перебиваем
+      if (!was && window.jQuery && jQuery.fn.popover) jQuery(form).find('.popover-link').popover('hide');
+    } else if (form.classList.contains('hts-lq-in')) {
+      form.classList.remove('hts-lq-in');
+      form.removeAttribute('data-hts-key');
+      form.removeAttribute('data-hts-count');
+      input.value = 1;
+    }
+  }
+  function applyAll() { [].forEach.call(forms(), setState); }
+
+  function button(step, label, text) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'hts-lq-btn';
+    b.setAttribute('data-step', step);
+    b.setAttribute('aria-label', label);
+    b.textContent = text;
+    return b;
+  }
+
+  function enhance(form) {
+    if (form.classList.contains('hts-lq-form')) return;
+    var input = countInput(form);
+    var add = form.querySelector('[name=ms2_action][value="cart/add"]');
+    if (!input || !add || !form.querySelector('input[name=id]')) return;
+    if (add.classList.contains('nalich_net_btn')) return;   // нет в наличии — кнопка и так не добавляет
+    form.classList.add('hts-lq-form');
+    var holder = input.parentNode && input.parentNode.classList.contains('stepper') ? input.parentNode : input;
+    var qty = document.createElement('div');
+    qty.className = 'hts-lq-qty';
+    holder.parentNode.insertBefore(qty, holder);
+    qty.appendChild(button('-1', 'Уменьшить количество', '−'));
+    qty.appendChild(holder);
+    qty.appendChild(button('1', 'Увеличить количество', '+'));
+    input.setAttribute('inputmode', 'numeric');
+    var go = document.createElement('a');
+    go.className = 'hts-lq-go';
+    go.href = CART_URL;
+    go.setAttribute('aria-label', 'Товар в корзине, перейти в корзину');
+    go.textContent = '✓ В корзине';
+    add.parentNode.insertBefore(go, add.nextSibling);
+    setState(form);
+  }
+  function enhanceAll(root) {
+    [].forEach.call((root || document).querySelectorAll('#mse2_results .product form.ms2_form'), enhance);
+  }
+
+  function updateHeader(data) {
+    if (!window.jQuery || !window.miniShop2 || !miniShop2.Cart) return;
+    if (data.total_count > 0) { miniShop2.Cart.status(data); return; }
+    // при пустой корзине miniShop2.Cart.status перезагружает страницу — обнуляем шапку сами
+    jQuery(miniShop2.Cart.totalCount).text(0);
+    jQuery(miniShop2.Cart.totalCost).text(0);
+    jQuery(miniShop2.Cart.miniCart).removeClass(miniShop2.Cart.miniCartNotEmptyClass);
+  }
+
+  function revert(form, message) {
+    var input = countInput(form);
+    var c = form.getAttribute('data-hts-count');
+    if (c !== null) input.value = c;
+    if (message && window.miniShop2 && miniShop2.Message && miniShop2.Message.error) miniShop2.Message.error(message);
+  }
+
+  function send(form) {
+    form.htsTimer = null;
+    var key = form.getAttribute('data-hts-key');
+    var input = countInput(form);
+    var n = parseInt(input.value, 10);
+    if (!key) return;
+    if (isNaN(n) || n < 0) { revert(form); return; }
+    if (String(n) === form.getAttribute('data-hts-count')) return;
+    var seq = (form.htsSeq || 0) + 1;
+    form.htsSeq = seq;
+    form.classList.add('hts-lq-busy');
+    jQuery.ajax({
+      url: (window.miniShop2Config && miniShop2Config.actionUrl) || '/assets/components/minishop2/action.php',
+      type: 'POST',
+      dataType: 'json',
+      data: { ms2_action: n > 0 ? 'cart/change' : 'cart/remove', key: key, count: n, ctx: (window.miniShop2Config && miniShop2Config.ctx) || 'web' }
+    }).done(function (r) {
+      if (!r || !r.success) { revert(form, r && r.message); return; }
+      updateHeader(r.data || { });
+    }).fail(function () {
+      revert(form, 'Не удалось изменить количество. Проверьте связь и попробуйте ещё раз.');
+    }).always(function () {
+      if (form.htsSeq === seq) form.classList.remove('hts-lq-busy');
+    });
+  }
+  function schedule(form, delay) {
+    clearTimeout(form.htsTimer);
+    form.htsTimer = setTimeout(function () { send(form); }, delay);
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('.hts-lq-btn') : null;
+    if (!b) return;
+    e.preventDefault();
+    var form = b.closest('form');
+    var input = form ? countInput(form) : null;
+    if (!input) return;
+    var inCart = form.classList.contains('hts-lq-in');
+    var n = parseInt(input.value, 10);
+    if (isNaN(n)) n = 1;
+    n += b.getAttribute('data-step') === '-1' ? -1 : 1;
+    if (n < 1) n = inCart ? 0 : 1;         // в корзине «−» на одной штуке убирает товар
+    input.value = n;
+    if (inCart) schedule(form, 400);       // несколько быстрых нажатий уходят одним запросом
+  });
+
+  // число, набранное с клавиатуры, отправляется, когда поле теряет фокус
+  document.addEventListener('change', function (e) {
+    var input = e.target;
+    if (!input || input.name !== 'count' || !input.form) return;
+    if (input.form.classList.contains('hts-lq-in') && isPhone()) schedule(input.form, 0);
+  });
+  // «Ввод» в поле товара, который уже в корзине, не должен добавлять его второй раз:
+  // браузер в ответ на «Ввод» нажимает скрытую кнопку «В корзину», поэтому гасим саму клавишу
+  document.addEventListener('keydown', function (e) {
+    var input = e.target;
+    if (e.key !== 'Enter' || !input || input.name !== 'count' || !input.form) return;
+    if (!input.form.classList.contains('hts-lq-in') || !isPhone()) return;
+    e.preventDefault();
+    input.blur();
+  }, true);
+  document.addEventListener('submit', function (e) {
+    var form = e.target;
+    if (!form || !form.classList || !form.classList.contains('hts-lq-in') || !isPhone()) return;
+    e.preventDefault();
+    e.stopPropagation();
+    var input = countInput(form);
+    if (input && document.activeElement === input) input.blur();
+  }, true);
+
+  // каждый ответ miniShop2 приносит корзину целиком — по нему отмечаем карточки
+  if (window.jQuery) {
+    jQuery(document).ajaxSuccess(function (e, xhr, settings) {
+      if (!settings || String(settings.url).indexOf('minishop2/action.php') < 0) return;
+      var r = xhr.responseJSON;
+      if (!r) { try { r = JSON.parse(xhr.responseText); } catch (err) { return; } }
+      var map = r && r.success && r.data ? parseCart(r.data.cart) : null;
+      if (map) { cart = map; applyAll(); }
+    });
+  }
+
+  function start() {
+    var results = document.getElementById('mse2_results');
+    if (!results) return;
+    enhanceAll();
+    // mFilter2 перерисовывает список после фильтров и догружает товары при прокрутке
+    if (window.MutationObserver) {
+      var t = null;
+      new MutationObserver(function () {
+        clearTimeout(t);
+        t = setTimeout(function () { enhanceAll(); }, 50);
+      }).observe(results, { childList: true, subtree: true });
+    }
+    // что уже лежит в корзине: отдельного запроса у miniShop2 на сайте нет, берём страницу корзины
+    var total = document.querySelector('.ms2_total_count');
+    if (total && parseInt(total.textContent, 10) > 0 && window.fetch && window.DOMParser) {
+      fetch(CART_URL, { credentials: 'same-origin' }).then(function (r) { return r.text(); }).then(function (html) {
+        var map = parseCart(html);
+        if (map && cart === null) { cart = map; applyAll(); }
+      }).catch(function () { });
+    } else {
+      cart = { };
+    }
+    // телефон повернули: на широком экране обычная кнопка, на узком — снова состояние из корзины
+    if (phone) {
+      var onChange = function () { applyAll(); };
+      if (phone.addEventListener) phone.addEventListener('change', onChange); else if (phone.addListener) phone.addListener(onChange);
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
