@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		[[$Heads]]
+	</head>
+	<body class="template-collection">
+	    <div class="page_preloader"></div>
+	    <div id="wrapper1">
+	        <div id="wrapper2">
+	        [[$header]]
+	        [[$topsub]]
+	        [[$crumbs]]
+
+                <style>
+                    #subcategory-tabs-list a {color: #354594; font: bold 14px/.96em "PT Sans"; text-transform: uppercase; margin: 0 15px; cursor: pointer;}
+                    #subcategory-tabs-list a.active {text-decoration: underline;}
+                    #subcategory-tabs-content > div {display: none; color: #333333 !important;}
+                    #subcategory-tabs-content > div.active {display: block;}
+                </style>
+
+                <script>
+                    $(document).on('click', '#subcategory-tabs-list a', function(e) {
+                        $("#subcategory-tabs-list a").removeClass("active");
+                        $(this).addClass("active");
+
+                        $("#subcategory-tabs-content > div").removeClass("active");
+                        $("#subcategory-tabs-content > div[data-tab='" + $(this).attr("data-tab") + "']").addClass("active");
+                    });
+                </script>
+
+                <div class="container">
+                    <div class="row page-header page_content page_heading"><h1 class="page_heading">[[*pagetitle]]</h1></div>
+                </div>
+
+                <div id="main" role="main">
+                    <div class="container">
+    			[[!mFilter2?
+					&limit=`24`
+					&parents=`[[*id]]`
+					&element=`msProducts`
+					&toPlaceholders=`my.`
+					&filters=`
+						tv|bumag,
+						tv|vid,
+						tv|tara,
+						tv|upak,
+						tv|vtulka,
+						tv|vigr,
+						tv|visota,
+						tv|plotn,
+						tv|derevo,
+						tv|derjat,
+						tv|diametr,
+						tv|dlin,
+						tv|kach,
+						tv|luch,
+						tv|stroch,
+						tv|zub,
+						tv|colodka,
+						tv|complekt,
+						tv|comps,
+						tv|krcherenok,
+						tv|krish,
+						tv|litr,
+						tv|material,
+						tv|materuch,
+						tv|materitin,
+						tv|metraj,
+						tv|mod,
+						tv|nazn,
+						tv|nalruch,
+						tv|nalzav,
+						tv|napil,
+						tv|nomer,
+						tv|obem,
+						tv|opora,
+						tv|plotnost,
+						tv|pokrit,
+						tv|prochn,
+						tv|razvors,
+						tv|razmer,
+						tv|reagent,
+						tv|sloyn,
+						tv|summa,
+						tv|sortn,
+						tv|sredstvo,
+						tv|temper,
+						tv|typevors,
+						tv|colodki,
+						tv|krizki,
+						tv|shirina,
+						tv|frakcia,
+						tv|forma,
+						tv|upakov,
+						tv|tolsh,
+						tv|typeustan,
+						tv|typeuprav,
+						tv|typesvyaz,
+						tv|typeruch,
+						tv|platform,
+						tv|oporatype
+					`
+					&includeTVs=`opt_count, opt_price, qwuanty, podzakas, netvnalichii, kss_print_first`
+					&_filterOptions=`{"autoLoad":0}`
+					&tpls=`kss_msProducts`
+					&class=`msProduct`
+					&select=`{
+                        "data": "IF(TVnetvnalichii.value='yes', 0, 1) as sort1, IF(TVkss_print_first.value='1', 0, 1) as sort2, IF(TVpodzakas.value='yes', 3, IF(msProduct.pagetitle LIKE 'Накладка%', 1, IF(msProduct.pagetitle LIKE '%2 мм%' OR msProduct.pagetitle LIKE '%2мм%', 0, 2))) as sort3"
+                        }`
+					&sort=`sort2:asc,sort1:desc,[[*alias:is=`alyuminievye-lopaty-dlya-snega`:then=`sort3:asc,`:else=``]]ms|price:[[*id:is=`322`:then=`desc`:else=`asc`]]`
+					&where=`[[*id:is=`312`:then=`["Data.id NOT IN (SELECT pc.product_id FROM modx_ms2_product_categories pc JOIN modx_site_content c ON c.id=pc.category_id WHERE c.alias='alyuminievye-lopaty-dlya-snega' AND c.parent=309)"]`:else=``]]`
+					&ajaxMode=`scroll`
+					&tplFilter.outer.ms|price=`tpl.mFilter2.filter.slider`
+					&tplFilter.row.ms|price=`tpl.mFilter2.filter.number`
+					&tplFilter.outer.ms|vendor=`tpl.mFilter2.filter.select`
+					&tplFilter.row.ms|vendor=`tpl.mFilter2.filter.option`
+				]]
+                        <div class="row msearch2" id="mse2_mfilter">
+                        [[$sidebarcategory]]
+                        [[$contentcategory]]
+                        </div>
+                        [[$HtsMobileFilters]]
+
+                        <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
+    	                    <div id="subcategory-tabs-list">
+                                <a class="active" data-tab="1" style="margin-left: 0;">Описание продукции</a> |
+                                <a data-tab="2">Характеристики</a> |
+                                <a data-tab="3">Как выбрать</a> |
+                                <a data-tab="4">Условие поставки</a> |
+                                <a data-tab="5">Скидки и оплата</a>
+    	                    </div>
+
+                            <div id="subcategory-tabs-content">
+                                <div data-tab="1" class="active">
+                                   <article>[[*subcategory_description]]</article>
+                                </div>
+
+                                <div data-tab="2">
+                                    [[*subcategory_stats]]
+                                </div>
+
+                                <div data-tab="3">
+                                    [[*subcategory_choose]]
+                                </div>
+
+                                <div data-tab="4">
+                                    [[*subcategory_delivery]]
+                                </div>
+
+                                <div data-tab="5">
+                                    [[*subcategory_discounts]]
+                                </div>
+                            </div>
+	                    </div>
+
+        	     	    <div class="additional_Information">
+        	     	    [[*subcategory_additional_Information]]
+        	     	    </div>
+			        </div>
+	     	    </div>
+
+	    	    [[$Footers]]
+		    </div>
+		</div>
+		<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip({
+    'html':true
+  });
+});
+</script>
+<script>
+$(function(){
+ $('article').readmore({
+  speed: 500,
+  lessLink: '<p class="more"><a href="#" class="btn btn-default">Свернуть</a></p>',
+  moreLink: '<p class="more"><a href="#" class="btn btn-default">Читать далее</a></p>',
+  collapsedHeight: 160,
+ });
+});
+</script>
+	</body>
+</html>

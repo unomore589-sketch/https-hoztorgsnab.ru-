@@ -1,0 +1,175 @@
+<div id="msCart">
+{if !count($products)}
+<div style="padding:40px 20px!important;text-align:center!important;color:#666!important;font-size:16px!important">{'ms2_cart_is_empty' | lexicon}</div>
+{else}
+<div style="display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;background:#f7f8fc!important;border:1px solid #e3e6f0!important;border-radius:10px!important;padding:16px 20px!important;margin-bottom:16px!important">
+  <div style="font-size:14px!important;color:#555!important"><span class="ms2_total_count">{$total.count}</span> шт. на сумму</div>
+  <div style="font-size:20px!important;font-weight:700!important;color:#2E4FEA!important"><span class="ms2_total_cost">{$total.cost}</span> {'ms2_frontend_currency' | lexicon}</div>
+  <a class="hts-go-checkout" href="[[~80]]">Оформить заказ</a>
+</div>
+<div class="hts-min-warn" role="status" style="display:none"></div>
+
+<div style="display:flex!important;flex-direction:column!important;gap:12px!important;margin-bottom:16px!important">
+{foreach $products as $product}
+<div style="display:flex!important;gap:14px!important;align-items:flex-start!important;border:1px solid #e3e6f0!important;border-radius:10px!important;padding:14px!important;background:#fff!important" id="{$product.key}" data-id="{$product.id}" data-retail="{$_modx->runSnippet('htsRetail', ['id' => $product.id])}">
+  {if $product.thumb?}
+    <img style="width:64px!important;height:64px!important;object-fit:contain!important;border-radius:6px!important" src="{$product.thumb}" alt="{$product.pagetitle}" title="{$product.pagetitle}"/>
+  {else}
+    <img style="width:64px!important;height:64px!important;object-fit:contain!important;border-radius:6px!important" src="{'assets_url' | option}components/minishop2/img/web/ms2_small.png" alt="{$product.pagetitle}" title="{$product.pagetitle}"/>
+  {/if}
+  <div style="flex:1 1 auto!important;min-width:0!important">
+    {if $product.id?}
+      <a style="font-size:14px!important;font-weight:600!important;color:#222!important;text-decoration:none!important;display:block!important" href="{$product.id | url}">{$product.pagetitle}</a>
+    {else}
+      <div style="font-size:14px!important;font-weight:600!important;color:#222!important">{$product.name}</div>
+    {/if}
+    <div style="font-size:12px!important;color:#999!important;margin:2px 0 6px!important">Код: {$product.article}</div>
+    {if $product.options?}<div style="font-size:12px!important;color:#777!important;margin-bottom:6px!important">{$product.options | join : '; '}</div>{/if}
+
+    <div style="display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important;justify-content:space-between!important">
+      <form method="post" class="ms2_form hts-qty">
+        <input type="hidden" name="key" value="{$product.key}"/>
+        <button type="button" class="hts-qty-btn" data-step="-1" aria-label="Уменьшить количество">&minus;</button>
+        <input type="number" name="count" class="product__count only_digit hts-qty-input" inputmode="numeric" min="1" value="{$product.count}" aria-label="Количество"/>
+        <button type="button" class="hts-qty-btn" data-step="1" aria-label="Увеличить количество">+</button>
+        <button type="submit" name="ms2_action" value="cart/change" style="border:1px solid #d7dae3!important;background:#f7f8fc!important;border-radius:6px!important;padding:6px 10px!important"><i class="glyphicon glyphicon-refresh"></i></button>
+      </form>
+
+      <div style="font-weight:700!important;color:#2E4FEA!important;font-size:15px!important;white-space:nowrap!important">{$product.price} {'ms2_frontend_currency' | lexicon}</div>
+
+      <form method="post" class="ms2_form" style="margin:0!important">
+        <input type="hidden" name="key" value="{$product.key}">
+        <button type="submit" name="ms2_action" value="cart/remove" style="border:1px solid #d7dae3!important;background:#f7f8fc!important;border-radius:6px!important;padding:6px 10px!important"><i class="glyphicon glyphicon-remove"></i></button>
+      </form>
+    </div>
+  </div>
+</div>
+{/foreach}
+</div>
+<div class="hts-min-warn" role="status" style="display:none"></div>
+
+<div style="display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;background:#f7f8fc!important;border:1px solid #e3e6f0!important;border-radius:10px!important;padding:16px 20px!important">
+  <div style="font-size:14px!important;color:#555!important"><span class="ms2_total_count">{$total.count}</span> шт. на сумму</div>
+  <div style="font-size:20px!important;font-weight:700!important;color:#2E4FEA!important"><span class="ms2_total_cost">{$total.cost}</span> {'ms2_frontend_currency' | lexicon}</div>
+  <form method="post" style="margin:0">
+    <button type="submit" name="ms2_action" value="cart/clean" style="background:#eee!important;color:#333!important;border:1px solid #ccc!important;border-radius:8px!important;padding:12px 24px!important;font-weight:600!important">{'ms2_cart_clean' | lexicon}</button>
+  </form>
+  <a class="hts-go-checkout" href="[[~80]]">Оформить заказ</a>
+</div>
+
+{ignore}
+<!-- Блок ниже (стили и скрипт) Fenom не разбирает: фигурные скобки в CSS и JS он принимает за свои теги
+     (проверено на копии 21.09.2026 — корзина не отрисовывалась совсем). -->
+<style>
+/* Кнопка «Оформить заказ» в корзине (21.09.2026): стили вынесены из style="" в класс,
+   иначе серое «выключенное» состояние не перебить. */
+#msCart .hts-go-checkout{background:#2F8F00!important;color:#fff!important;border:none!important;border-radius:8px!important;padding:12px 24px!important;font-weight:700!important;text-decoration:none!important;display:inline-block!important}
+#msCart .hts-go-checkout.hts-go-off{background:#c9ced6!important;cursor:not-allowed!important}
+#msCart .hts-min-warn{margin:0 0 16px!important;padding:12px 16px!important;border-radius:10px!important;background:#fdecea!important;border:1px solid #f5c2bd!important;color:#8a1c14!important;font-size:15px!important;line-height:1.45!important}
+
+/* Количество в корзине (13.11.2026). Раньше поле оборачивал плагин stepper, а общий файл стилей
+   прячет .stepper на экранах уже 480px — на телефоне количество изменить было нельзя.
+   Теперь свои кнопки «−» и «+», одинаковые на телефоне и на компьютере. */
+#msCart .hts-qty{display:flex!important;align-items:center!important;gap:4px!important;margin:0!important}
+#msCart .hts-qty-btn{width:42px!important;height:42px!important;flex:0 0 42px!important;padding:0!important;border:1px solid #d7dae3!important;background:#f7f8fc!important;border-radius:8px!important;color:#222!important;font-size:22px!important;font-weight:600!important;line-height:1!important;cursor:pointer!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}
+#msCart .hts-qty-btn:active{background:#e3e6f0!important}
+#msCart .hts-qty-btn:focus-visible{outline:2px solid #2E4FEA!important;outline-offset:1px!important}
+#msCart .hts-qty-input{width:54px!important;height:42px!important;flex:0 0 54px!important;margin:0!important;padding:0 2px!important;text-align:center!important;border:1px solid #d7dae3!important;border-radius:8px!important;background:#fff!important;color:#222!important;font-size:16px!important;font-weight:600!important;line-height:1!important;box-shadow:none!important;-moz-appearance:textfield!important;appearance:textfield!important}
+#msCart .hts-qty-input::-webkit-outer-spin-button,#msCart .hts-qty-input::-webkit-inner-spin-button{-webkit-appearance:none!important;margin:0!important}
+</style>
+<script>
+/* Кнопки «−» и «+» в корзине (13.11.2026). Меняют число в поле и сообщают об этом miniShop2
+   событием change — дальше он сам отправляет количество на сервер и пересчитывает сумму,
+   как при вводе числа с клавиатуры. Несколько быстрых нажатий подряд уходят одним запросом.
+   Обработчик висит на документе, поэтому работает и после того, как miniShop2 перерисует корзину. */
+(function () {
+  if (window.htsQtyBound) return;
+  window.htsQtyBound = true;
+  var timers = {};
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest('#msCart .hts-qty-btn') : null;
+    if (!btn) return;
+    e.preventDefault();
+    var form = btn.closest('form');
+    var input = form ? form.querySelector('input[name=count]') : null;
+    var key = form ? form.querySelector('input[name=key]') : null;
+    if (!input || !key) return;
+    var n = parseInt(input.value, 10);
+    if (isNaN(n)) n = 1;
+    n += btn.getAttribute('data-step') === '-1' ? -1 : 1;
+    if (n < 1) n = 1;                      // убрать товар совсем — крестиком справа
+    input.value = n;
+    clearTimeout(timers[key.value]);
+    timers[key.value] = setTimeout(function () {
+      if (window.jQuery) jQuery(input).trigger('change');
+    }, 400);
+  });
+})();
+/* Минимальная сумма заказа (21.09.2026). Пока в корзине меньше минимума — «Оформить заказ»
+   серая и никуда не ведёт, над списком и под ним — сколько не хватает. Сумма пересчитывается
+   без перезагрузки (miniShop2 меняет её запросом), поэтому следим за ней после каждого запроса.
+   Это удобство, а не защита: сервер всё равно не примет заказ меньше минимума (плагин hts_min_order_guard). */
+(function () {
+  var MIN = parseFloat('[[++hts_min_order]]') || 3000;
+  function rub(n) { return Math.ceil(n).toLocaleString('ru-RU') + ' ₽'; }
+  // Минимум сравнивается с РОЗНИЧНОЙ суммой (решение владельца 21.09.2026): розничная цена
+  // каждой строки лежит в data-retail (её считает Fenom: после изменения количества miniShop2
+  // перерисовывает корзину без обработки тегов MODX, и тег в двойных квадратных скобках остался бы сырым), количество — в поле строки. Показанная «сумма» может быть
+  // меньше — в ней уже оптовая цена за количество.
+  function cartSum() {
+    var rows = document.querySelectorAll('#msCart [data-retail]');
+    if (!rows.length) return null;
+    var sum = 0;
+    for (var i = 0; i < rows.length; i++) {
+      var price = parseFloat(rows[i].getAttribute('data-retail'));
+      var inp = rows[i].querySelector('input[name=count]');
+      var cnt = inp ? parseFloat(inp.value) : NaN;
+      if (isNaN(price) || isNaN(cnt)) return shownSum();   // нет розницы в строке — берём показанную сумму
+      sum += price * cnt;
+    }
+    return Math.round(sum * 100) / 100;
+  }
+  // Запасной вариант: показанная сумма не больше розничной, поэтому предупреждение скорее
+  // покажется лишний раз, чем не покажется. Сервер всё равно проверит по рознице.
+  function shownSum() {
+    var e = document.querySelector('#msCart .ms2_total_cost');
+    if (!e) return null;
+    var n = parseFloat((e.textContent || '').replace(/[\s ]/g, '').replace(',', '.'));
+    return isNaN(n) ? null : n;
+  }
+  function update() {
+    var s = cartSum();
+    if (s === null) return;
+    var low = s < MIN;
+    [].forEach.call(document.querySelectorAll('#msCart .hts-go-checkout'), function (a) {
+      a.classList.toggle('hts-go-off', low);
+      a.setAttribute('aria-disabled', low ? 'true' : 'false');
+    });
+    [].forEach.call(document.querySelectorAll('#msCart .hts-min-warn'), function (w) {
+      w.style.display = low ? 'block' : 'none';
+      if (!low) return;
+      var html = 'Минимальный заказ — <b>' + rub(MIN) + '</b>. Добавьте товаров ещё на <b>' + rub(MIN - s) + '</b>.';
+      if (w.innerHTML !== html) w.innerHTML = html;   // писать только при изменении, иначе снова сработает наблюдатель
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('#msCart .hts-go-checkout.hts-go-off') : null;
+    if (!a) return;
+    e.preventDefault();
+    var w = document.querySelector('#msCart .hts-min-warn');
+    if (w && w.scrollIntoView) w.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, true);
+  update();
+  if (window.jQuery) jQuery(document).ajaxComplete(function () { setTimeout(update, 0); });
+  // Следим ТОЛЬКО за числом суммы. Наблюдатель на всю корзину зацикливался: предупреждение само
+  // лежит внутри неё, его перезапись снова запускала проверку (страница висла, проверено 21.09.2026).
+  if (window.MutationObserver) {
+    [].forEach.call(document.querySelectorAll('#msCart .ms2_total_cost'), function (el) {
+      new MutationObserver(update).observe(el, { subtree: true, childList: true, characterData: true });
+    });
+  }
+})();
+</script>
+{/ignore}
+{/if}
+</div>

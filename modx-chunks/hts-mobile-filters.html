@@ -1,0 +1,158 @@
+<!-- Фильтры каталога на телефоне (13.11.2026).
+     Общий файл стилей прячет боковую колонку .sidebar_right на экранах уже 480px, а фильтры mSearch2
+     лежат в ней — на телефоне они были недоступны. Этот блок добавляет над списком товаров кнопку
+     «Фильтры» и показывает ту же колонку панелью снизу экрана. Сами фильтры и их работа не меняются.
+     На экранах шире 480px блок ничего не делает.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+.hts-f-bar { display: none }
+.hts-f-head, .hts-f-foot, .hts-f-shade { display: none }
+
+@media (max-width: 480px) {
+  .hts-f-bar { display: block !important; padding: 8px 0 !important; margin: 0 0 8px !important }
+  .hts-f-open { display: flex !important; align-items: center !important; justify-content: center !important; gap: 8px !important; width: 100% !important; min-height: 46px !important; padding: 0 16px !important; border: 1px solid #c9ced6 !important; border-radius: 10px !important; background: #fff !important; color: #222 !important; font-size: 16px !important; font-weight: 600 !important; line-height: 1 !important; cursor: pointer !important; touch-action: manipulation !important }
+  .hts-f-open svg { width: 18px !important; height: 18px !important; flex: 0 0 18px !important }
+  .hts-f-n { display: none; min-width: 22px !important; height: 22px !important; padding: 0 6px !important; border-radius: 11px !important; background: #2F8F00 !important; color: #fff !important; font-size: 13px !important; line-height: 22px !important; text-align: center !important }
+  .hts-f-n.hts-f-has { display: inline-block !important }
+
+  html.hts-f-on, html.hts-f-on body { overflow: hidden !important }
+  html.hts-f-on .hts-f-shade { display: block !important; position: fixed !important; top: 0 !important; right: 0 !important; bottom: 0 !important; left: 0 !important; z-index: 100000 !important; background: rgba(20, 24, 30, .5) !important }
+
+  html.hts-f-on #mse2_mfilter .sidebar_right { display: flex !important; flex-direction: column !important; position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; top: auto !important; z-index: 100001 !important; width: auto !important; max-width: none !important; max-height: 86vh !important; float: none !important; margin: 0 !important; padding: 0 !important; background: #fff !important; border-radius: 16px 16px 0 0 !important; box-shadow: 0 -6px 24px rgba(0, 0, 0, .18) !important; overflow: hidden !important }
+  /* в панели остаются только фильтры: меню каталога, баннер и переносы строк скрыты */
+  html.hts-f-on #mse2_mfilter .sidebar_right > * { display: none !important }
+  html.hts-f-on #mse2_mfilter .sidebar_right > .hts-f-head { display: flex !important; align-items: center !important; justify-content: space-between !important; flex: 0 0 auto !important; padding: 14px 16px !important; border-bottom: 1px solid #e3e6f0 !important }
+  html.hts-f-on #mse2_mfilter .sidebar_right > #mse2_filters { display: block !important; flex: 1 1 auto !important; min-height: 0 !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; margin: 0 !important; padding: 4px 16px 12px !important }
+  html.hts-f-on #mse2_mfilter .sidebar_right > .hts-f-foot { display: flex !important; gap: 10px !important; flex: 0 0 auto !important; padding: 12px 16px !important; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; border-top: 1px solid #e3e6f0 !important; background: #fff !important }
+
+  .hts-f-title { font-size: 18px !important; font-weight: 700 !important; color: #222 !important; margin: 0 !important }
+  .hts-f-close { width: 40px !important; height: 40px !important; padding: 0 !important; border: none !important; border-radius: 20px !important; background: #f1f3f6 !important; color: #222 !important; font-size: 24px !important; line-height: 1 !important; cursor: pointer !important }
+  .hts-f-reset { flex: 0 0 auto !important; min-height: 48px !important; padding: 0 16px !important; border: 1px solid #c9ced6 !important; border-radius: 10px !important; background: #fff !important; color: #222 !important; font-size: 15px !important; font-weight: 600 !important; cursor: pointer !important }
+  .hts-f-show { flex: 1 1 auto !important; min-height: 48px !important; padding: 0 16px !important; border: none !important; border-radius: 10px !important; background: #2F8F00 !important; color: #fff !important; font-size: 16px !important; font-weight: 700 !important; cursor: pointer !important }
+
+  html.hts-f-on #mse2_filters fieldset { margin: 0 !important; padding: 12px 0 8px !important; border: none !important; border-bottom: 1px solid #eef0f4 !important; min-width: 0 !important }
+  html.hts-f-on #mse2_filters fieldset:last-of-type { border-bottom: none !important }
+  html.hts-f-on #mse2_filters .filter_title { margin: 0 0 4px !important; font-size: 15px !important; font-weight: 700 !important; color: #222 !important; text-transform: none !important }
+  html.hts-f-on #mse2_filters br { display: none !important }
+  html.hts-f-on #mse2_filters label { display: flex !important; align-items: center !important; gap: 12px !important; min-height: 44px !important; margin: 0 !important; padding: 0 !important; font-size: 16px !important; font-weight: 400 !important; color: #222 !important; line-height: 1.25 !important; cursor: pointer !important }
+  html.hts-f-on #mse2_filters label.disabled { opacity: .4 !important }
+  html.hts-f-on #mse2_filters input[type=checkbox], html.hts-f-on #mse2_filters input[type=radio] { width: 22px !important; height: 22px !important; flex: 0 0 22px !important; margin: 0 !important; accent-color: #2F8F00 }
+  html.hts-f-on #mse2_filters label sup { top: 0 !important; margin-left: auto !important; font-size: 13px !important; color: #8a93a0 !important }
+}
+</style>
+<script>
+(function () {
+  if (window.htsFiltersBound) return;
+  window.htsFiltersBound = true;
+
+  function plural(n) {
+    var a = n % 10, b = n % 100;
+    if (a === 1 && b !== 11) return 'товар';
+    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return 'товара';
+    return 'товаров';
+  }
+
+  function start() {
+    var side = document.querySelector('#mse2_mfilter .sidebar_right');
+    var form = document.getElementById('mse2_filters');
+    var results = document.getElementById('mse2_results');
+    if (!side || !form || !results || form.parentNode !== side) return;
+    if (!form.querySelector('input')) return;            // в разделе нет ни одного фильтра
+    if (side.querySelector('.hts-f-head')) return;
+
+    var root = document.documentElement;
+    var total = null;                                     // сколько товаров нашёл mSearch2 по последнему запросу
+
+    var bar = document.createElement('div');
+    bar.className = 'hts-f-bar';
+    bar.innerHTML = '<button type="button" class="hts-f-open" aria-haspopup="dialog">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>' +
+      '<span>Фильтры</span><span class="hts-f-n"></span></button>';
+    var host = results.closest('.product_listing_main') || results;
+    host.parentNode.insertBefore(bar, host);
+
+    var head = document.createElement('div');
+    head.className = 'hts-f-head';
+    head.innerHTML = '<p class="hts-f-title">Фильтры</p><button type="button" class="hts-f-close" aria-label="Закрыть фильтры">&times;</button>';
+    side.insertBefore(head, side.firstChild);
+
+    var foot = document.createElement('div');
+    foot.className = 'hts-f-foot';
+    foot.innerHTML = '<button type="button" class="hts-f-reset">Сбросить</button><button type="button" class="hts-f-show">Показать товары</button>';
+    side.appendChild(foot);
+
+    // Затемнение кладём рядом с колонкой, а не в body: у #wrapper1 свой порядок слоёв (z-index: 1),
+    // и затемнение из body легло бы поверх самой панели (проверено 13.11.2026).
+    var shade = document.createElement('div');
+    shade.className = 'hts-f-shade';
+    side.parentNode.insertBefore(shade, side);
+
+    var badge = bar.querySelector('.hts-f-n');
+    var showBtn = foot.querySelector('.hts-f-show');
+    var openBtn = bar.querySelector('.hts-f-open');
+
+    function checked() { return form.querySelectorAll('input[type=checkbox]:checked, input[type=radio]:checked'); }
+
+    function refresh() {
+      var n = checked().length;
+      badge.textContent = n ? String(n) : '';
+      badge.classList.toggle('hts-f-has', n > 0);
+      showBtn.textContent = total === null ? 'Показать товары' : 'Показать ' + total + ' ' + plural(total);
+    }
+
+    function open() {
+      root.classList.add('hts-f-on');
+      side.setAttribute('role', 'dialog');
+      side.setAttribute('aria-label', 'Фильтры');
+      head.querySelector('.hts-f-close').focus();
+    }
+    function close() {
+      if (!root.classList.contains('hts-f-on')) return;
+      root.classList.remove('hts-f-on');
+      side.removeAttribute('role');
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', open);
+    head.querySelector('.hts-f-close').addEventListener('click', close);
+    shade.addEventListener('click', close);
+    showBtn.addEventListener('click', function () {
+      close();
+      if (bar.scrollIntoView) bar.scrollIntoView({ block: 'start' });
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+    foot.querySelector('.hts-f-reset').addEventListener('click', function () {
+      var on = checked();
+      if (!on.length) return;
+      var first = on[0];
+      [].forEach.call(on, function (i) { i.checked = false; });
+      if (window.jQuery) jQuery(first).trigger('change');   // mSearch2 сам перезагрузит список
+      refresh();
+    });
+
+    form.addEventListener('change', function () { setTimeout(refresh, 0); });
+
+    // mSearch2 после каждой загрузки списка сообщает, сколько товаров нашлось
+    if (window.jQuery) {
+      jQuery(document).on('mse2_load', function (e, response) {
+        var t = response && response.data ? parseInt(response.data.total, 10) : NaN;
+        total = isNaN(t) ? null : t;
+        refresh();
+      });
+    }
+
+    // если экран стал шире 480px (поворот телефона), панель закрывается
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(max-width: 480px)');
+      var onChange = function () { if (!mq.matches) close(); };
+      if (mq.addEventListener) mq.addEventListener('change', onChange); else if (mq.addListener) mq.addListener(onChange);
+    }
+
+    refresh();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
