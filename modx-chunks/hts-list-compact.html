@@ -1,0 +1,33 @@
+<!-- Компактные карточки каталога на телефоне (13.11.2026).
+     Карточка товара занимала 636px при экране 839px: под фото оставалось пустое поле (блок фото фиксированной
+     высоты 290px при фото 170px), артикул и наличие стояли в две строки, а каждая из двух цен — в строке высотой
+     40px. Здесь только оформление, без скрипта: фото ниже, артикул и наличие в одну строку, «Розница» и «Опт» —
+     две тонкие строки, название чуть мельче и показывается целиком. В одном ряду цены и кнопки стоят на одной линии. Кнопки «−», «+» и «В корзину»
+     остаются теми же. На экранах шире 480px блок ничего не меняет.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+/* htsListCompact */
+@media (max-width: 480px) {
+  /* в одном ряду карточки одной высоты, цены и кнопки прижаты к низу, поэтому «В корзину» стоят на одной линии */
+  #mse2_results .product { display: flex !important; flex-direction: column !important; height: 100% !important; padding-bottom: 8px !important }
+  #mse2_results .product .product_info { margin-top: auto !important }
+  #mse2_results .product .product_img { height: auto !important; min-height: 0 !important }
+  #mse2_results .product .img_change { display: block !important; height: auto !important; padding: 6px !important; line-height: 0 !important }
+  #mse2_results .product .prod_inside { display: block !important; width: auto !important; height: auto !important; line-height: 0 !important }
+  #mse2_results .product .prod_inside img { display: block !important; width: auto !important; max-width: 100% !important; height: auto !important; max-height: 150px !important; margin: 0 auto !important }
+
+  #mse2_results .product .product_infos { padding: 3px 10px !important }
+  #mse2_results .product .product_infos br { display: none !important }
+  #mse2_results .product .product_infos > span { font-size: 12px !important; line-height: 17px !important }
+  #mse2_results .product .product_infos > br + span::before { content: " \00b7 " }
+  #mse2_results .product .product_name { height: auto !important; max-height: none !important; overflow: visible !important; padding: 0 0 2px !important }
+  #mse2_results .product .product_infos.clearfix { height: auto !important; min-height: 0 !important }
+  #mse2_results .product .product_name a { font-size: 13px !important; line-height: 17px !important }
+
+  #mse2_results .product .cart-button { padding: 0 5px !important }
+  #mse2_results .product .product__wrapper > div[style] { display: flex !important; justify-content: space-between !important; align-items: baseline !important; float: none !important; width: 100% !important; height: auto !important; padding: 2px 4px !important }
+  #mse2_results .product .product__wrapper > div[style] .pricer { float: none !important; width: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important; line-height: 18px !important; font-size: 13px !important }
+  #mse2_results .product .hts-lq-qty { margin: 4px 0 6px !important }
+}
+</style>
