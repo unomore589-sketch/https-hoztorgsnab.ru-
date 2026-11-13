@@ -1,0 +1,159 @@
+<!-- Быстрое добавление товара в корзине (13.11.2026).
+     Блок «Добавить товар по-быстрому» (чанк tpl.mSearch2.Cart.form, сценарий /assets/js/mSearch.custom.js):
+     на экранах до 800px колонку количества прячут стили сайта (.countinput, .product_count_wrapper, .stepper), и покупатель видел цену дважды
+     (цена за штуку и «стоимость» = цена × 1). Кроме того, стоимость не пересчитывалась при смене количества.
+     Здесь, на экранах до 800px (граница, где сайт прячет количество), — название выбранного товара целиком, «цена за шт.», количество с «−» и «+»,
+     «Сумма», кнопка на всю ширину; до выбора товара видно только поле поиска; после добавления —
+     «✓ Добавлено…», и блок готов к следующему товару. На компьютере раскладка прежняя, только сумма
+     теперь пересчитывается.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+.hts-qa-head, .hts-qa-btn, .hts-qa-sum, .hts-qa-note { display: none }
+.hts-qa-qty { display: contents }
+
+@media (max-width: 800px) {
+  .hts-qa.hts-qa-off #cart_prod { display: none !important }
+  .hts-qa #cart_prod { margin: 0 !important }
+  .hts-qa #cart_prod > div { float: none !important; width: 100% !important; padding: 0 !important }
+  .hts-qa #cart_prod form.ms2_form { display: flex !important; flex-wrap: wrap !important; align-items: center !important; gap: 10px !important; margin: 4px 0 0 !important; padding: 14px !important; border: 1px solid #e3e6f0 !important; border-radius: 10px !important; background: #f7f8fc !important }
+  .hts-qa #cart_prod form.ms2_form > div { float: none !important; width: auto !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important }
+  .hts-qa #cart_prod .priceinp, .hts-qa #cart_prod .costinp { display: none !important }
+
+  .hts-qa .hts-qa-head { display: block !important; flex: 0 0 100% !important; order: 0 !important }
+  .hts-qa-name { font-size: 15px !important; font-weight: 600 !important; line-height: 1.35 !important; color: #222 !important }
+  .hts-qa-unit { margin-top: 4px !important; font-size: 14px !important; color: #555 !important }
+
+  .hts-qa #cart_prod .countinput, .hts-qa #cart_prod .product_count_wrapper { display: block !important; order: 1 !important; flex: 0 0 auto !important; width: auto !important; height: auto !important; line-height: normal !important; border: none !important; background: none !important; padding: 0 !important; margin: 0 !important }
+  .hts-qa .hts-qa-qty { display: flex !important; align-items: stretch !important; gap: 4px !important }
+  .hts-qa-qty .stepper, .hts-qa-qty .product_count_wrapper, .hts-qa-qty > input[name=count] { display: block !important; flex: 0 0 56px !important; width: 56px !important; height: 44px !important; margin: 0 !important; padding: 0 !important; border: none !important; background: none !important; float: none !important; position: static !important }
+  .hts-qa-qty .stepper-step { display: none !important }
+  .hts-qa-qty input[name=count] { width: 100% !important; height: 44px !important; margin: 0 !important; padding: 0 2px !important; border: 1px solid #d7dae3 !important; border-radius: 8px !important; background: #fff !important; color: #222 !important; font-size: 16px !important; font-weight: 600 !important; text-align: center !important; box-shadow: none !important; float: none !important; position: static !important; -moz-appearance: textfield !important; appearance: textfield !important }
+  .hts-qa-qty input[name=count]::-webkit-outer-spin-button, .hts-qa-qty input[name=count]::-webkit-inner-spin-button { -webkit-appearance: none !important; margin: 0 !important }
+  .hts-qa .hts-qa-btn { display: block !important; flex: 0 0 44px !important; width: 44px !important; height: 44px !important; margin: 0 !important; padding: 0 !important; border: 1px solid #d7dae3 !important; border-radius: 8px !important; background: #fff !important; color: #222 !important; font-size: 22px !important; font-weight: 600 !important; line-height: 1 !important; cursor: pointer !important; touch-action: manipulation !important }
+  .hts-qa .hts-qa-btn:active { background: #e3e6f0 !important }
+
+  .hts-qa .hts-qa-sum { display: block !important; order: 2 !important; flex: 1 1 auto !important; text-align: right !important; font-size: 13px !important; color: #555 !important; line-height: 1.2 !important }
+  .hts-qa-sum b { display: block !important; font-size: 19px !important; font-weight: 700 !important; color: #2E4FEA !important; white-space: nowrap !important }
+
+  .hts-qa #cart_prod form.ms2_form > div:last-child { order: 3 !important; flex: 0 0 100% !important; width: 100% !important }
+  .hts-qa #cart_prod .newaddcart { display: block !important; width: 100% !important; min-height: 48px !important; margin: 0 !important; border: none !important; border-radius: 8px !important; background: #2F8F00 !important; color: #fff !important; font-size: 16px !important; font-weight: 700 !important }
+
+  .hts-qa .hts-qa-note { display: none; margin: 8px 0 0 !important; padding: 10px 12px !important; border-radius: 8px !important; background: #e5f6e0 !important; color: #1f6b14 !important; font-size: 14px !important; line-height: 1.35 !important }
+  .hts-qa .hts-qa-note.hts-qa-shown { display: block !important }
+}
+</style>
+<script>
+(function () {
+  if (window.htsQuickAddBound) return;
+  window.htsQuickAddBound = true;
+
+  var phone = window.matchMedia ? window.matchMedia('(max-width: 800px)') : null;   // граница сайта для этого блока
+  function isPhone() { return !!(phone && phone.matches); }
+  function num(t) { var n = parseFloat(String(t || '').replace(/[\s ]/g, '').replace(',', '.')); return isNaN(n) ? 0 : n; }
+  function round2(n) { return Math.round(n * 100) / 100; }
+  function rub(n) { return round2(n).toLocaleString('ru-RU') + ' ₽'; }
+
+  function start() {
+    var wrap = document.querySelector('.add-product-from-cart-form');
+    var box = document.getElementById('cart_prod');
+    var form = box ? box.querySelector('form.ms2_form') : null;
+    var search = wrap ? wrap.querySelector('input[name=query]') : null;
+    if (!wrap || !form || !search) return;
+    var input = form.querySelector('input[name=count]');
+    var idInp = form.querySelector('input[name=id]');
+    var priceEl = form.querySelector('.price');
+    var costEl = form.querySelector('.cost');
+    if (!input || !idInp || !priceEl || !costEl) return;
+    wrap.classList.add('hts-qa');
+
+    var head = document.createElement('div');
+    head.className = 'hts-qa-head';
+    head.innerHTML = '<div class="hts-qa-name"></div><div class="hts-qa-unit"></div>';
+    form.insertBefore(head, form.firstChild);
+
+    var holder = input;
+    if (input.parentNode && input.parentNode.classList.contains('stepper')) holder = input.parentNode;
+    var qty = document.createElement('div');
+    qty.className = 'hts-qa-qty';
+    holder.parentNode.insertBefore(qty, holder);
+    var minus = document.createElement('button');
+    minus.type = 'button'; minus.className = 'hts-qa-btn'; minus.setAttribute('data-step', '-1');
+    minus.setAttribute('aria-label', 'Уменьшить количество'); minus.textContent = '−';
+    var plus = document.createElement('button');
+    plus.type = 'button'; plus.className = 'hts-qa-btn'; plus.setAttribute('data-step', '1');
+    plus.setAttribute('aria-label', 'Увеличить количество'); plus.textContent = '+';
+    qty.appendChild(minus); qty.appendChild(holder); qty.appendChild(plus);
+    input.setAttribute('inputmode', 'numeric');
+
+    var sum = document.createElement('div');
+    sum.className = 'hts-qa-sum';
+    sum.innerHTML = 'Сумма<b></b>';
+    var countCol = form.querySelector('.countinput') || qty;
+    countCol.parentNode.insertBefore(sum, countCol.nextSibling);
+
+    var note = document.createElement('div');
+    note.className = 'hts-qa-note';
+    note.setAttribute('role', 'status');
+    wrap.appendChild(note);
+    var noteTimer = null;
+
+    function count() { var n = parseInt(input.value, 10); return isNaN(n) || n < 1 ? 1 : n; }
+    function update() {
+      var price = num(priceEl.textContent);
+      var has = !!idInp.value && price > 0;
+      wrap.classList.toggle('hts-qa-off', !has);
+      if (!has) return;
+      var n = count();
+      costEl.textContent = String(round2(price * n));   // на компьютере: сумма теперь меняется вместе с количеством
+      head.querySelector('.hts-qa-name').textContent = search.value;
+      head.querySelector('.hts-qa-unit').textContent = rub(price) + ' за шт.';
+      sum.querySelector('b').textContent = rub(price * n);
+    }
+
+    form.addEventListener('click', function (e) {
+      var b = e.target && e.target.closest ? e.target.closest('.hts-qa-btn') : null;
+      if (!b) return;
+      e.preventDefault();
+      var n = count() + (b.getAttribute('data-step') === '-1' ? -1 : 1);
+      input.value = n < 1 ? 1 : n;
+      update();
+    });
+    input.addEventListener('input', update);
+    // стрелки плагина на компьютере сообщают об изменении через jQuery, обычное событие браузера при этом не возникает
+    if (window.jQuery) jQuery(input).on('change', update); else input.addEventListener('change', update);
+
+    if (window.jQuery) {
+      // сценарий поиска заполняет цену и id в своём обработчике выбора, поэтому читаем после него
+      jQuery(search).on('autocompleteselect', function () {
+        setTimeout(function () {
+          update();
+          if (isPhone()) { search.blur(); search.scrollLeft = 0; }
+        }, 0);
+      });
+      // после добавления на телефоне: короткое подтверждение и пустой блок для следующего товара
+      jQuery(document).ajaxSuccess(function (e, xhr, settings) {
+        if (!isPhone() || !settings || String(settings.url).indexOf('minishop2/action.php') < 0) return;
+        var sent = window.miniShop2 && miniShop2.sendData;
+        if (!sent || !sent.$form || sent.$form[0] !== form || sent.action !== 'cart/add') return;
+        var r = xhr.responseJSON;
+        if (!r) { try { r = JSON.parse(xhr.responseText); } catch (err) { return; } }
+        if (!r || !r.success) return;
+        note.textContent = '✓ Добавлено в заказ: ' + search.value + ' — ' + count() + ' шт.';
+        note.classList.add('hts-qa-shown');
+        clearTimeout(noteTimer);
+        noteTimer = setTimeout(function () { note.classList.remove('hts-qa-shown'); }, 6000);
+        search.value = '';
+        idInp.value = '';
+        priceEl.textContent = '';
+        costEl.textContent = '';
+        input.value = 1;
+        update();
+      });
+    }
+    update();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
