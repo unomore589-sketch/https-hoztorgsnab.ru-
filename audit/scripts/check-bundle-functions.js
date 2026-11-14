@@ -1,0 +1,14 @@
+const { chromium, devices } = require('/opt/node-tools/node_modules/playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium',proxy:{server:process.env.HTTPS_PROXY}});
+ const ctx=await b.newContext({...devices['Pixel 7'],locale:'ru-RU'}); const p=await ctx.newPage();
+ await p.goto('https://hoztorgsnab.ru/catalog/meshki-dlya-musora/meshki-dlya-musora-v-rulonax/',{waitUntil:'load',timeout:90000}); await p.waitForTimeout(2500);
+ const r={};
+ r.cards0=await p.evaluate(()=>document.querySelectorAll('#mse2_results .product').length);
+ r.total=await p.evaluate(()=>(document.querySelector('#mse2_total')||{}).textContent);
+ await p.evaluate(()=>window.scrollTo(0,document.body.scrollHeight)); await p.waitForTimeout(3000);
+ await p.evaluate(()=>window.scrollTo(0,document.body.scrollHeight)); await p.waitForTimeout(3000);
+ r.cardsAfterScroll=await p.evaluate(()=>document.querySelectorAll('#mse2_results .product').length);
+ r.burger=await p.evaluate(()=>{const t=[...document.querySelectorAll('[data-toggle=collapse],.navbar-toggle,.menu_toggle,.mobile_menu_btn,.hamburger')].filter(e=>e.getBoundingClientRect().height>0)[0]; if(!t) return 'no toggler'; const tgt=document.querySelector(t.getAttribute('data-target')||'#none'); const before=tgt?getComputedStyle(tgt).display:'?'; t.click(); return {t:t.outerHTML.slice(0,120), before, after: tgt?getComputedStyle(tgt).display:'?' , cls: tgt&&tgt.className}});
+ await p.waitForTimeout(800);
+ r.fn=await p.evaluate(()=>({bootstrapCollapse:!!jQuery.fn.collapse, fancybox:!!jQuery.fn.fancybox, stepper:!!jQuery.fn.stepper, mSearch2:typeof mSearch2, owl:!!jQuery.fn.owlCarousel, mask:!!jQuery.fn.mask}));
+ console.log(JSON.stringify(r,null,1)); await b.close();})();

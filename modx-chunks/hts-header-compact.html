@@ -1,0 +1,40 @@
+<!-- Компактная шапка на телефоне (14.11.2026).
+     Шапка занимала 200px, заголовок раздела ещё 132px, и первый товар начинался на 641px при экране 839px.
+     Кнопки «телефон», «корзина» и «кабинет клиента» в шапке повторяют нижнюю панель («Позвонить», «Корзина»
+     со счётчиком, «Кабинет»), поэтому на телефоне шапка теперь в две строки: логотип, номер телефона (мелко,
+     нажимается) и меню; ниже поиск на всю ширину. Заголовок раздела с меньшими отступами.
+     Только оформление, без скрипта. Работает на экранах до 767px (как и правила мобильной шапки сайта); на экранах уже 360px номер скрыт, остаётся «Позвонить» в нижней панели; на компьютере не меняется.
+     Вызов этого чанка стоит в конце чанка Footers.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+/* htsHeaderCompact */
+/* правила мобильной шапки сайта (до 767px) уже раскладывают её флексом; здесь их перекрываем: перед каждым правилом #wrapper2 */
+@media (max-width: 767px) {
+  #wrapper2 #header > .container { display: flex !important; flex-wrap: wrap !important; align-items: center !important; gap: 6px 8px !important; padding-top: 6px !important; padding-bottom: 8px !important }
+  #wrapper2 #header > .container > * { margin: 0 !important; padding: 0 !important; min-height: 0 !important; float: none !important }
+
+  #wrapper2 #header #logo { order: 1 !important; flex: 0 1 auto !important; width: auto !important; text-align: left !important }
+  #wrapper2 #header #logo a { display: block !important; line-height: 0 !important }
+  #wrapper2 #header #logo img { display: block !important; width: auto !important; height: 34px !important; max-width: 100% !important; margin: 0 !important }
+
+  #wrapper2 #header .phone-header.col-xs-6 { order: 2 !important; flex: 1 1 auto !important; width: auto !important; text-align: right !important }
+  #wrapper2 #header .phone-header .phonesmobile { display: inline-block !important; width: auto !important; height: auto !important; margin: 0 !important; padding: 8px 0 !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; color: #354594 !important; font: 700 14px/20px "PT Sans", Arial, sans-serif !important; white-space: nowrap !important }
+  #wrapper2 #header .phone-header .phonesmobile .fa { display: none !important }
+
+  #wrapper2 #header .mob-menu { order: 3 !important; flex: 0 0 44px !important }
+  #wrapper2 #header .header_search.col-xs-6 { order: 4 !important; flex: 1 1 100% !important; width: 100% !important }
+  /* меню открывается сразу под шапкой: у сайта было 112px под высокую шапку */
+  #wrapper2 header .mob-menu .nav { top: 108px !important }
+
+  #wrapper2 #header .cartmobile, #wrapper2 #header .header_user, #wrapper2 #header .header_social { display: none !important }
+
+  /* заголовок раздела: меньше пустого места сверху и снизу */
+  #wrapper2 > .container > .page-header { margin: 6px 0 4px !important; padding: 0 !important; border-bottom: 0 !important; min-height: 0 !important }
+  #wrapper2 > .container > .page-header h1.page_heading { margin: 0 !important; padding: 0 !important }
+}
+@media (max-width: 359px) {
+  #wrapper2 #header .phone-header.col-xs-6 { display: none !important }
+  #wrapper2 #header #logo { flex: 1 1 auto !important }
+}
+</style>
