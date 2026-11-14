@@ -1,0 +1,81 @@
+<!-- Страница поиска на телефоне (14.11.2026).
+     Карточка в поиске занимала 562px: под фото пустое поле, название обрезалось на полуслове, карточки стояли
+     «обтеканием» и ряды съезжали лесенкой, кнопок «−» и «+» не было. Здесь карточки результатов собираются в общий
+     контейнер с тем же id, что и список раздела (#mse2_results), поэтому к ним применяются уже работающие на сайте
+     «компактные карточки» (HtsListCompact) и «−/+» (HtsListQty): их вызовы стоят в чанке Footers сразу после этого.
+     Строка «мешки: 123» заменяется на «По запросу «мешки» найдено 123 товара». На телефоне второе поле поиска
+     на странице скрыто, а запрос подставлен в поиск в шапке, чтобы его было легко поправить.
+     Работает только на странице поиска (/poisk.html); на остальных страницах ничего не делает.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+/* htsSearchCompact */
+.hts-sr { display: flex !important; flex-wrap: wrap !important; align-items: stretch !important; margin: 0 -8px !important; padding: 0 !important; clear: both !important }
+.hts-sr > .item { float: none !important; display: flex !important; flex-direction: column !important; padding-left: 8px !important; padding-right: 8px !important; margin-bottom: 16px !important }
+.hts-sr > .item > .product { flex: 1 1 auto !important }
+.hts-sr-count { clear: both !important; margin: 4px 0 12px !important; color: #4b5563 !important; font-size: 15px !important; line-height: 1.35 !important }
+.hts-sr-count b { color: #222 !important }
+@media (max-width: 767px) {
+  .hts-sr-page .page_content > #mse2_form { display: none !important }
+  .hts-sr-page .page_header { margin: 0 !important; padding: 0 !important }
+  .hts-sr-page .page_header h1.page_heading { margin: 4px 0 2px !important; padding: 0 !important }
+}
+</style>
+<script>
+(function () {
+  if (window.htsSearchCompactBound) return;
+  window.htsSearchCompactBound = true;
+  if (location.pathname.indexOf('/poisk') !== 0 || document.getElementById('mse2_results')) return;
+
+  function plural(n, one, few, many) {
+    var a = n % 10, b = n % 100;
+    if (a === 1 && b !== 11) return one;
+    if (a >= 2 && a <= 4 && (b < 12 || b > 14)) return few;
+    return many;
+  }
+
+  function run() {
+    var box = document.querySelector('.page_content');
+    if (!box) return;
+    var items = [];
+    [].forEach.call(box.children, function (el) { if (el.classList.contains('item') && el.querySelector('.product')) items.push(el); });
+    document.documentElement.classList.add('hts-sr-page');
+
+    // строка «запрос: число» — текст между формой и первой карточкой
+    var form = box.querySelector('#mse2_form');
+    var q = form ? form.querySelector('input[name=query]') : null;
+    for (var node = form ? form.nextSibling : null; node && node !== items[0]; node = node.nextSibling) {
+      if (node.nodeType !== 3) continue;
+      var m = /^\s*(.*?):\s*(\d+)\s*$/.exec(node.nodeValue || '');
+      if (!m) continue;
+      var n = parseInt(m[2], 10);
+      var p = document.createElement('p');
+      p.className = 'hts-sr-count';
+      if (n > 0) {
+        p.appendChild(document.createTextNode('По запросу «' + m[1] + '» ' + plural(n, 'найден ', 'найдено ', 'найдено ')));
+        var b = document.createElement('b');
+        b.textContent = n + ' ' + plural(n, 'товар', 'товара', 'товаров');
+        p.appendChild(b);
+      } else {
+        p.textContent = 'По запросу «' + m[1] + '» ничего не нашлось. Проверьте написание или попробуйте другое слово, например «мешки», «веник», «перчатки».';
+      }
+      node.parentNode.replaceChild(p, node);
+      break;
+    }
+
+    // запрос — в поиск в шапке, чтобы на телефоне его было легко поправить
+    var head = document.querySelector('#header #search-field');
+    if (head && q && !head.value) head.value = q.value;
+
+    if (!items.length) return;
+    var wrap = document.createElement('div');
+    wrap.id = 'mse2_results';
+    wrap.className = 'hts-sr';
+    items[0].parentNode.insertBefore(wrap, items[0]);
+    items.forEach(function (el) { wrap.appendChild(el); });
+  }
+  // карточки уже на странице: чанк стоит в подвале, поэтому собираем их сразу, до запуска «−/+»
+  if (document.querySelector('.page_content')) run();
+  else document.addEventListener('DOMContentLoaded', run);
+})();
+</script>
