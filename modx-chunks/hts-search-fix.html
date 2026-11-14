@@ -1,0 +1,161 @@
+<!-- Поиск, который прощает ошибки (14.11.2026).
+     Если по запросу ничего не найдено, страница поиска сама пробует:
+       1) тот же текст в другой раскладке («vtirb» → «мешки», «вщьуыещы» → «domestos»);
+       2) опечатки: лишняя буква («веникк», «мешшки»), две соседние буквы наоборот («веинк»), пропущенная гласная («мшки»).
+     Из правдоподобных вариантов выбирается тот, по которому на сайте больше всего товаров. Две ошибки в одном слове не исправляются.
+     Проверка идёт тем же запросом, который сайт использует для подсказок под строкой поиска (в нём «нет ни одного
+     результата» — это уже готовое число, а не вся страница). Первый вариант, по которому что-то нашлось, открывается
+     вместо пустой страницы, и над результатами написано, что именно показано. Если ничего не подошло, остаётся обычное
+     «ничего не нашлось». Запрос, по которому есть результаты, не трогается никогда. Эта же страница второй раз
+     не перепроверяется (в адресе добавляется метка htsfix), поэтому зацикливания нет.
+     Работает только на странице поиска (/poisk.html), ничего не меняет в базе, в самих результатах и в серверном коде.
+     Вызов этого чанка стоит в конце чанка Footers.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+/* htsSearchFix */
+.hts-sr-note { clear: both !important; margin: 4px 0 12px !important; padding: 8px 12px !important; background: #f4f6f9 !important; border-left: 3px solid #354594 !important; color: #333 !important; font-size: 15px !important; line-height: 1.35 !important }
+.hts-sr-note b { color: #222 !important }
+.hts-sr-note a { color: #354594 !important; text-decoration: underline !important }
+/* заодно: значок комментариев в карточке на телефоне. У сайта он сдвинут на -38px вверх и в первом ряду налезал на заголовок страницы;
+   теперь он лежит в левом верхнем углу фото */
+@media (max-width: 480px) {
+  .product > .comment_link { top: 6px !important; left: 6px !important; margin: 0 !important; z-index: 5 !important }
+}
+</style>
+<script>
+(function () {
+  if (window.htsSearchFixBound) return;
+  window.htsSearchFixBound = true;
+  if (location.pathname.indexOf('/poisk') !== 0) return;
+
+  var LAT = "qwertyuiop[]asdfghjkl;'zxcvbnm,.`";
+  var CYR = "йцукенгшщзхъфывапролджэячсмитьбюё";
+
+  function param(name) {
+    var m = new RegExp('[?&]' + name + '=([^&#]*)').exec(location.search);
+    if (!m) return '';
+    try { return decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (e) { return m[1]; }
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  var query = param('query').replace(/\s+/g, ' ').trim();
+  var fixed = param('htsfix');           // исходный запрос, если мы уже перенаправляли
+  var kind = param('htsk');              // l — раскладка, t — опечатка
+
+  function hasProducts() { return !!document.querySelector('.page_content .product'); }
+
+  // ---- 1. уже перенаправили: объясняем, что показано
+  function showNote() {
+    var box = document.querySelector('.page_content');
+    if (!box || !fixed) return;
+    var note = document.createElement('p');
+    note.className = 'hts-sr-note';
+    var back = '/poisk.html?htsfix=0&query=' + encodeURIComponent(fixed);
+    note.innerHTML = (kind === 'l'
+      ? 'Похоже, был включён другой язык. Показаны результаты по «<b>' + esc(query) + '</b>» вместо «' + esc(fixed) + '».'
+      : 'По «' + esc(fixed) + '» ничего не нашлось. Показаны результаты по «<b>' + esc(query) + '</b>».')
+      + ' <a href="' + back + '">Искать именно «' + esc(fixed) + '»</a>';
+    var form = box.querySelector('#mse2_form');
+    var anchor = box.querySelector('.hts-sr-count') || (form ? form.nextSibling : null);
+    box.insertBefore(note, anchor && anchor.parentNode === box ? anchor : box.firstChild);
+  }
+  if (fixed) window.htsSearchFixDone = true;
+  if (fixed && fixed !== '0') {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showNote); else showNote();
+    return;
+  }
+  if (fixed === '0') return;           // «искать именно так»
+
+  // ---- 2. пустая страница: ищем вариант
+  if (query.length < 3) return;
+
+  function swapLayout(s, from, to) {
+    var out = '';
+    for (var i = 0; i < s.length; i++) {
+      var k = from.indexOf(s.charAt(i));
+      out += k < 0 ? s.charAt(i) : to.charAt(k);
+    }
+    return out;
+  }
+  function share(s, re) {
+    var letters = s.replace(/[\s\d]/g, '');
+    if (!letters) return 0;
+    var n = 0;
+    for (var i = 0; i < letters.length; i++) if (re.test(letters.charAt(i))) n++;
+    return n / letters.length;
+  }
+
+  // варианты по очереди «правдоподобности»; в каждой группе берём тот, по которому нашлось больше всего товаров
+  function tiers(q) {
+    var low = q.toLowerCase(), seen = { }, t1 = [], t2 = [], t3 = [];
+    seen[low] = true;
+    function add(list, s, k) {
+      s = s.replace(/\s+/g, ' ').trim();
+      if (s.length < 4 || seen[s]) return;       // совсем короткие слова дают случайные результаты
+      seen[s] = true;
+      list.push({ q: s, k: k });
+    }
+    if (share(low, /[a-z\[\];',.`]/) >= .6) add(t1, swapLayout(low, LAT, CYR), 'l');
+    if (share(low, /[а-яёъ]/) >= .6) add(t1, swapLayout(low, CYR, LAT), 'l');
+    // две соседние буквы наоборот, лишняя буква (кроме первой), лишняя буква в конце
+    for (var j = 0; j < low.length - 1; j++) if (low.charAt(j) !== ' ' && low.charAt(j + 1) !== ' ') add(t2, low.slice(0, j) + low.charAt(j + 1) + low.charAt(j) + low.slice(j + 2), 't');
+    add(t2, low.slice(0, -1), 't');
+    for (var i = 1; i < low.length; i++) if (low.charAt(i) !== ' ') add(t2, low.slice(0, i) + low.slice(i + 1), 't');
+    // пропущена гласная; обрезанный на две буквы конец
+    var V = 'аеиоуыэюя';
+    for (var p = 1; p <= low.length; p++) for (var v = 0; v < V.length; v++) add(t3, low.slice(0, p) + V.charAt(v) + low.slice(p), 't');
+    add(t3, low.slice(0, -2), 't');
+    return [t1, t2, t3].filter(function (t) { return t.length; });
+  }
+
+  function formKey() {
+    var f = document.querySelector('form.msearch2[data-key]');
+    return f ? f.getAttribute('data-key') : '';
+  }
+  // сколько товаров находит сайт по запросу: тот же запрос, что и для подсказок под строкой поиска
+  function count(q, key) {
+    if (!window.fetch) return Promise.resolve(0);
+    var body = 'action=search&key=' + encodeURIComponent(key) + '&query=' + encodeURIComponent(q) + '&pageId=8';
+    return fetch('/assets/components/msearch2/action.php', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-Requested-With': 'XMLHttpRequest' }, body: body
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      var n = j && j.success && j.data ? parseInt(j.data.total, 10) : 0;
+      return isNaN(n) ? 0 : n;
+    }).catch(function () { return 0; });
+  }
+
+  function go(c) {
+    location.replace('/poisk.html?query=' + encodeURIComponent(c.q) + '&htsfix=' + encodeURIComponent(query) + '&htsk=' + c.k);
+  }
+
+  function start() {
+    if (hasProducts()) { window.htsSearchFixDone = true; return; }
+    var key = formKey();
+    var groups = key ? tiers(query) : [];
+    if (!groups.length) { window.htsSearchFixDone = true; return; }
+    // пока идёт проверка, говорим об этом, чтобы пустая страница не выглядела окончательной
+    var wait = null, box = document.querySelector('.page_content');
+    if (box) {
+      wait = document.createElement('p');
+      wait.className = 'hts-sr-note';
+      wait.textContent = 'Ничего не нашлось. Ищем похожие запросы…';
+      var form = box.querySelector('#mse2_form');
+      box.insertBefore(wait, form && form.nextSibling && form.nextSibling.parentNode === box ? form.nextSibling : box.firstChild);
+    }
+    function finish() { if (wait && wait.parentNode) wait.parentNode.removeChild(wait); window.htsSearchFixDone = true; }
+    function next(g) {
+      if (g >= groups.length) { finish(); return; }
+      var part = groups[g];
+      Promise.all(part.map(function (c) { return count(c.q, key); })).then(function (counts) {
+        var best = -1;
+        for (var i = 0; i < part.length; i++) if (counts[i] > 0 && (best < 0 || counts[i] > counts[best])) best = i;
+        if (best >= 0) go(part[best]); else next(g + 1);
+      }, function () { finish(); });
+    }
+    next(0);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
