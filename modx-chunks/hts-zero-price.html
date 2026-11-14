@@ -1,0 +1,112 @@
+<!-- «Цена по запросу» вместо «0 руб.» (14.11.2026).
+     У товаров без цены сайт писал «Цена 0 руб.» в разделах, «0 руб.» с кнопкой «В корзину» в поиске (товар можно было
+     положить в корзину за 0 ₽) и «0 руб.», «Итого: 0 руб.» на странице товара. Здесь такие цены заменяются на
+     «Цена по запросу»; кнопка «В корзину» у таких товаров заменяется на «Узнать цену» (ведёт на страницу товара,
+     а на странице товара — звонок), корзина такой товар не принимает. Товары с ценой не трогаются.
+     Вызов этого чанка стоит в конце чанка Footers, работает на всех страницах и на всех экранах.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+/* htsZeroPrice */
+.hts-zp-val { color: #354594 !important; font-weight: 700 !important; font-size: 15px !important; line-height: 20px !important; white-space: nowrap !important }
+.hts-zp-val.hts-zp-short { margin-left: .3em !important }
+.hts-zp-hide { display: none !important }
+a.hts-zp-btn { display: block !important; width: 100% !important; min-height: 42px !important; line-height: 42px !important; margin: 0 !important; padding: 0 6px !important; box-sizing: border-box !important; background: #354594 !important; color: #fff !important; text-align: center !important; font-size: 16px !important; text-decoration: none !important; border: 0 !important; border-radius: 0 !important; overflow: hidden !important; white-space: nowrap !important; text-overflow: ellipsis !important }
+a.hts-zp-btn:hover, a.hts-zp-btn:focus { background: #2a3878 !important; color: #fff !important; text-decoration: none !important }
+.cart-top.hts-zp #yoba-price-1 { width: 75% !important; font-size: 20px !important; white-space: nowrap !important; overflow: hidden !important }
+.cart-top.hts-zp #yoba-price-1 .money { padding-left: 20px !important }
+.cart-top.hts-zp a.hts-zp-btn { float: left !important; width: 25% !important; height: 51px !important; line-height: 51px !important; font-weight: 700 !important }
+@media (max-width: 767px) {
+  .cart-top.hts-zp #yoba-price-1 { width: 100% !important }
+  .cart-top.hts-zp a.hts-zp-btn { width: 100% !important; margin-top: 5px !important }
+}
+</style>
+<script>
+(function () {
+  if (window.htsZeroPriceBound) return;
+  window.htsZeroPriceBound = true;
+
+  var ZERO = /^\s*0([.,]0+)?\s*руб\.?\s*$/;
+  var PHONE = 'tel:+74951202314';
+  function isZero(el) { return !!el && ZERO.test(el.textContent || ''); }
+  function hide(el) { if (el) el.classList.add('hts-zp-hide'); }
+  function link(href, cls) {
+    var a = document.createElement('a');
+    a.className = 'hts-zp-btn' + (cls ? ' ' + cls : '');
+    a.href = href;
+    a.textContent = 'Узнать цену';
+    return a;
+  }
+
+  // карточки в разделах, поиске, «Похожих товарах» и на главной
+  function cards(root) {
+    var els = (root || document).querySelectorAll('.product__wrapper .price, .product__wrapper .pricer');
+    [].forEach.call(els, function (el) {
+      if (el.classList.contains('hts-zp-val') || !isZero(el)) return;
+      var wrap = el.closest('.product__wrapper');
+      var row = el.parentElement;
+      var label = row && row !== wrap ? row.querySelector('.pricer') : null;
+      // в разделе слева уже написано «Цена», справа остаётся «по запросу»
+      var short = !!(label && label !== el && /Цена/.test(label.textContent));
+      el.textContent = short ? 'по запросу' : 'Цена по запросу';
+      el.classList.add('hts-zp-val');
+      if (short) el.classList.add('hts-zp-short');
+      // старая цена рядом с «по запросу» только сбивает с толку
+      [].forEach.call(wrap.querySelectorAll('.compare-at-price'), hide);
+
+      var btn = wrap.querySelector('button.addtocart');
+      var form = el.closest('form');
+      if (!btn || !form) return;
+      form.classList.add('hts-zp-form');
+      hide(btn);
+      var count = form.querySelector('input[name=count]');
+      if (count) hide(count.closest('.stepper') || count);
+      var card = form.closest('.product') || form.closest('.item');
+      var a = card ? card.querySelector('.product_name a, a.img_change') : null;
+      if (!wrap.querySelector('.hts-zp-btn')) btn.parentNode.insertBefore(link(a ? a.getAttribute('href') : PHONE), btn);
+    });
+  }
+
+  // страница товара
+  function product() {
+    var money = document.querySelector('#yoba-price-1 .money');
+    if (!isZero(money)) return;
+    money.textContent = 'Цена по запросу';
+    var top = money.closest('.cart-top');
+    if (top) top.classList.add('hts-zp');
+    hide(document.getElementById('yoba-element-1'));
+    var each = document.querySelector('.kss_prod_price');
+    if (each && /^\s*0([.,]0+)?\s*руб/.test(each.textContent || '')) hide(each);
+    var total = document.getElementById('yoba-vaka-3');
+    if (isZero(total)) hide(total.parentNode);
+    var btn = document.getElementById('yoba-button-1');
+    // серая плашка «Нет в наличии»: ширина задана прямо в элементе, на телефоне растягиваем её на всю строку
+    if (btn && btn.tagName !== 'BUTTON' && window.matchMedia && window.matchMedia('(max-width: 767px)').matches) {
+      btn.style.setProperty('width', '100%', 'important');
+      btn.style.setProperty('margin-top', '5px', 'important');
+    }
+    if (btn && btn.tagName === 'BUTTON') {
+      var form = btn.closest('form');
+      if (form) form.classList.add('hts-zp-form');
+      hide(btn);
+      btn.parentNode.insertBefore(link(PHONE), btn);
+    }
+  }
+
+  // товар без цены в корзину не отправляем: ни кнопкой, ни клавишей «Ввод»
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (!f || !f.classList || !f.classList.contains('hts-zp-form')) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
+
+  function run() { cards(document); product(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  // подгрузка товаров при прокрутке и смена фильтров
+  if (window.jQuery) {
+    jQuery(document).on('mse2_load', function () { setTimeout(run, 0); });
+    jQuery(document).ajaxComplete(function () { setTimeout(run, 0); });
+  }
+})();
+</script>

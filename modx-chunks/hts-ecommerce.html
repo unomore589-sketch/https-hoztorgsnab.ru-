@@ -1,0 +1,105 @@
+<!-- Яндекс Метрика: событие «добавление в корзину» (14.11.2026).
+     Старый обработчик в общем скрипте сайта падал в разделах и на главной (искал заголовок h1 внутри #main, а он стоит
+     выше), в поиске отправлял цену из первой надписи карточки, а на странице товара ждал кнопку #button-cart, которой
+     нет. Поэтому Метрика почти не получала добавлений в корзину. Здесь старый обработчик снимается, а событие
+     отправляется, когда сайт ответил, что товар действительно добавлен: из раздела, поиска, страницы товара, главной
+     и блока «Добавить товар по-быстрому» в корзине. Цена — розничная цена с карточки.
+     Вызов этого чанка стоит в конце чанка Footers.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<script>
+/* htsEcommerce */
+(function () {
+  if (window.htsEcommerceBound || !window.jQuery) return;
+  window.htsEcommerceBound = true;
+  window.dataLayer = window.dataLayer || [];
+  var $ = window.jQuery;
+
+  function txt(el) { return el ? String(el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+  function price(t) {
+    var m = String(t || '').replace(/[\s ]/g, '').replace(',', '.').match(/\d+(\.\d+)?/);
+    return m ? Number(m[0]) : 0;
+  }
+  function param(data, name) {
+    if (typeof data !== 'string') return '';
+    var parts = data.split('&');
+    for (var i = 0; i < parts.length; i++) {
+      var kv = parts[i].split('=');
+      if (decodeURIComponent(kv[0]) === name) return decodeURIComponent((kv[1] || '').replace(/\+/g, ' '));
+    }
+    return '';
+  }
+
+  var lastForm = null;
+  document.addEventListener('submit', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('ms2_form')) lastForm = e.target;
+  }, true);
+
+  function formFor(id) {
+    if (lastForm && document.contains(lastForm)) {
+      var own = lastForm.querySelector('input[name=id]');
+      if (own && own.value === id) return lastForm;
+    }
+    var inp = document.querySelector('form.ms2_form input[name=id][value="' + id.replace(/[^0-9]/g, '') + '"]');
+    return inp ? inp.form : null;
+  }
+
+  function category() {
+    // на странице товара — раздел из «хлебных крошек» перед самим товаром
+    var active = document.querySelector('.breadcrumb li.active');
+    var prev = active ? active.previousElementSibling : null;
+    if (document.getElementById('yoba-price-1') && prev) return txt(prev);
+    return txt(document.querySelector('h1.page_heading') || document.querySelector('h1'));
+  }
+
+  function describe(id) {
+    var form = formFor(id);
+    var p = { id: id, name: '', price: 0, brand: 'Hoztorgsnab', category: category() };
+    if (!form) return p;
+    if (form.querySelector('#yoba-button-1') || form.contains(document.getElementById('yoba-price-1'))) {
+      p.name = txt(document.querySelector('h1'));
+      p.price = price(txt(document.querySelector('#yoba-price-1 .money')));
+      return p;
+    }
+    if (form.closest('#cart_prod')) {
+      var q = document.querySelector('.add-product-from-cart-form input[name=query]');
+      p.name = q ? q.value.trim() : '';
+      p.price = price(txt(form.querySelector('.price')));
+      return p;
+    }
+    var card = form.closest('.product') || form.closest('.item') || form;
+    p.name = txt(card.querySelector('.product_name a')) || txt(card.querySelector('.product_name'));
+    // в разделе две цены: «Розница» и «Опт»; берём розничную, как на странице товара
+    var labels = card.querySelectorAll('.pricer');
+    for (var i = 0; i < labels.length; i++) {
+      if (/^Розница$/.test(txt(labels[i])) && labels[i].nextElementSibling) { p.price = price(txt(labels[i].nextElementSibling)); return p; }
+    }
+    var vals = card.querySelectorAll('.product__wrapper .price, .product__wrapper .pricer');
+    for (var j = 0; j < vals.length; j++) {
+      if (/\d.*руб/.test(txt(vals[j]))) { p.price = price(txt(vals[j])); break; }
+    }
+    return p;
+  }
+
+  $(document).ajaxSuccess(function (e, xhr, settings) {
+    if (!settings || String(settings.url).indexOf('minishop2/action.php') < 0) return;
+    if (param(settings.data, 'ms2_action') !== 'cart/add') return;
+    var r = xhr.responseJSON;
+    if (!r) { try { r = JSON.parse(xhr.responseText); } catch (err) { return; } }
+    if (!r || !r.success) return;
+    var id = param(settings.data, 'id');
+    if (!id) return;
+    var p = describe(id);
+    p.quantity = parseInt(param(settings.data, 'count'), 10) || 1;
+    window.dataLayer.push({ "ecommerce": { "currencyCode": "RUB", "add": { "products": [p] } } });
+  });
+
+  // старый обработчик «В корзину» из общего скрипта: падал с ошибкой, а в поиске отправил бы событие второй раз
+  function offOld() {
+    $(document.body).off('click', 'button.addtocart');
+    $(document.body).off('click', 'button#button-cart');
+  }
+  $(function () { offOld(); });
+  $(window).on('load', offOld);
+})();
+</script>
