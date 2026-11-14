@@ -1,0 +1,20 @@
+<!-- Окно про cookie на телефоне (14.11.2026).
+     При первом заходе окно занимало 313px из 839px: стили сайта на экранах до 480px растягивают каждую из трёх
+     кнопок на всю ширину (.hts-cookie__btn { flex-basis: 100% }), и одни кнопки занимали 136px. Здесь «Принять все»
+     и «Только необходимые» стоят рядом, «Настроить» — ссылкой под ними, текст чуть плотнее. Текст уведомления не
+     сокращается и не меняется, кнопки и их действия те же. Только оформление, без скрипта. На экранах шире 480px
+     блок ничего не меняет.
+     После каждой открывающей фигурной скобки стоит пробел или перенос строки, и в коде нет двойных
+     квадратных скобок: так его не тронет ни разборщик MODX, ни Fenom. -->
+<style>
+/* htsCookieCompact */
+@media (max-width: 480px) {
+  #hts-cookie .hts-cookie__inner { padding: 10px 12px !important }
+  #hts-cookie .hts-cookie__text { margin: 0 0 8px !important; line-height: 1.32 !important }
+  #hts-cookie .hts-cookie__text a { display: inline !important; min-height: 0 !important; height: auto !important }
+  #hts-cookie .hts-cookie__btns { gap: 6px !important }
+  #hts-cookie .hts-cookie__btns .hts-cookie__btn { flex: 1 1 calc(50% - 3px) !important; min-width: 0 !important; min-height: 44px !important; padding: 6px 8px !important; line-height: 1.15 !important }
+  #hts-cookie .hts-cookie__btns .hts-cookie__btn[data-hts-cookie-action="settings"] { flex: 1 1 100% !important; min-height: 36px !important; border-color: transparent !important; background: none !important; color: #2E4FEA !important; font-weight: 400 !important; text-decoration: underline !important }
+  #hts-cookie .hts-cookie__panel { margin: 0 0 8px !important; padding: 8px !important }
+}
+</style>
